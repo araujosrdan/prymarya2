@@ -1,4 +1,4 @@
-# prymarya 2
+# Prymarya 2
 
 Um pequeno framework PHP para criar projetos rapidamente.
 Versão para servidores de hospedagem compartilhada!
@@ -19,8 +19,14 @@ Versão para servidores de hospedagem compartilhada!
 
 -Para a tabela foi usado o "DataTables": https://datatables.net/  
 
+- Para alertas e mensagens foi usado "iziToast" e "SweetAlert": http://izitoast.marcelodolza.com/ | https://sweetalert2.github.io/ 
+
+- Para manipulação de dados frontend / backend foi usado o "Axios": https://github.com/axios/axios 
+
 # Estrutura:
-- SASS para CSS e Javascript. Use apenas o gulp na pasta "assets" 
+- SASS para compilar CSS e Javascript. Use apenas o comando "gulp" de dentro da pasta "assets". 
+
+OBS: Antes de usar o SASS, dentro da pasta "assets" rodar o comando "npm install". 
 
 # Configuração:
 -Para acesso a URLs modificar os arquivos .htaccess e config.php.  
