@@ -1,0 +1,239 @@
+// Small tablets and large smartphones (landscape view)
+$screen-sm-min: 576px;
+
+// Small tablets (portrait view)
+$screen-md-min: 768px;
+
+// Tablets and small desktops
+$screen-lg-min: 992px;
+
+// Large tablets and desktops
+$screen-xl-min: 1200px;
+
+// Small devices
+@mixin sm {
+  @media (min-width: #{$screen-sm-min}) {
+      @content;
+  }
+}
+
+// Medium devices
+@mixin md {
+  @media (min-width: #{$screen-md-min}) {
+      @content;
+  }
+}
+
+// Large devices
+@mixin lg {
+  @media (min-width: #{$screen-lg-min}) {
+      @content;
+  }
+}
+
+// Extra large devices
+@mixin xl {
+  @media (min-width: #{$screen-xl-min}) {
+      @content;
+  }
+}
+
+@font-face {
+    font-family: "Ubuntu";
+    src:url("../fonts/Ubuntu/Ubuntu-Regular.ttf");
+  }
+
+body {
+    font-family: "Ubuntu";
+    margin: 0;
+    background: #EEE;
+    height: auto;
+}
+
+img{
+  display: block;
+  width: 100%;
+  height: 100%;
+  flex: 0 1 60vw;
+  align-items: center;
+}
+
+.form_design_one{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 50vh;
+
+  & p {
+    color: #03EBA6;
+    text-shadow: 2px 2px rgba(0, 0, 0, 0.1), -2px 2px rgba(0, 0, 0, 0.1);
+    font-size: 3rem;
+  }
+}
+
+/* TEMPLATE PAGE */
+.dropbtn {
+  background-color: #000;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 99;
+
+  & a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+  & a:hover {
+    background-color: #f1f1f1;
+  }
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #000;
+}
+
+/* WELCOME PAGE */
+.logo_text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 50vh;
+
+  & p {
+    color: #03EBA6;
+    text-shadow: 2px 2px rgba(0, 0, 0, 0.1), -2px 2px rgba(0, 0, 0, 0.1);
+    font-size: 3.2rem;
+  }
+
+  & h1 {
+    color: #03EBA6;
+    text-shadow: 2px 2px rgba(0, 0, 0, 0.1), -2px 2px rgba(0, 0, 0, 0.1);
+    font-size: 9.2rem;
+  }
+}
+
+.logo_links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+
+  & a {
+    color: #03EBA6;
+    margin: 1rem;
+    text-decoration: none;
+  }
+}
+
+/* LOGIN PAGE */
+
+.login_design {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 50vh;
+
+  & p {
+    color: #03EBA6;
+    text-shadow: 2px 2px rgba(0, 0, 0, 0.1), -2px 2px rgba(0, 0, 0, 0.1);
+    font-size: 3rem;
+  }
+}
+
+.login_links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+
+  & a {
+    color: #03EBA6;
+    margin: 1rem;
+    text-decoration: none;
+  }
+}
+
+.return_message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  position:absolute;
+  bottom:0;
+  width: 100%;
+}
+
+/* MODAL PAGE */
+
+.header_treat {
+  font-weight: bold;
+}
+
+/* IMAGES PAGE */
+.img_tweaks{
+width: 100%;
+}
+
+@include lg {
+  img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      flex: 0 1 60vw;
+      align-items: center;
+  }
+
+  .login_design p {
+      color: #03EBA6;
+      text-shadow: 2px 2px rgba(0, 0, 0, 0.1), -2px 2px rgba(0, 0, 0, 0.1);
+      font-size: 4rem;
+  }
+
+  /* IMAGES PAGE */
+  .img_tweaks{
+    width: 200px;
+    height: 130px;
+    min-height: 130px;
+    float: left;
+    text-align: center;
+    margin: 10px;
+    padding: 10px;
+    margin-bottom: 100px;
+
+    & img {
+      width: 200px;
+    }
+
+    .img_edit {
+      display: flex;
+      text-align: center;
+      padding: 10px;
+    }
+  }
+
+}

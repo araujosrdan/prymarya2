@@ -1,0 +1,5 @@
+# Build and Release Folders
+vendor/*
+assets/node_modules/*
+.vscode/*
+assets/package-lock.json
