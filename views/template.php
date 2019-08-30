@@ -8,44 +8,29 @@
     <title>Prymarya 2 framework</title>
     <link rel="shortcut icon" type="image/x-icon" href="<?php echo BASEURL; ?>assets/img/icon.png">
     <link href="<?php echo BASEURL; ?>assets/lib/dataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
-    <link href="<?php echo BASEURL; ?>assets/lib/dataTables/css/dataTables.bootstrap.min.css" rel="stylesheet" />
     <link href="<?php echo BASEURL; ?>assets/lib/bootstrap-4.3.1/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="<?php echo BASEURL; ?>assets/lib/dataTables/css/dataTables.bootstrap.min.css" rel="stylesheet" />
     <link href="<?php echo BASEURL; ?>assets/lib/iziToast/dist/css/iziToast.min.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="<?php echo BASEURL; ?>assets/dist/styles.css?cb=1567140344076">
-    <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/jquery-3.4.1.min.js"></script>
-    <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/axios/dist/axios.js"></script>
-    <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/iziToast/dist/js/iziToast.min.js"></script>
-    <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/sweetalert2@8.js"></script>
-    <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/dataTables/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/dataTables/js/dataTables.bootstrap.min.js"></script>
-    <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/bootstrap-4.3.1/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="<?php echo BASEURL; ?>assets/dist/all.js?cb=1567140344076"></script>
   </head>
   <body oncontextmenu="return false">
-    <nav class="navbar navbar-inverse">
-        <div class="container">
-            <div id="navbar">
-                <ul class="nav navbar-nav navbar-left">
-                    <li>
-                         <a href="<?php echo BASEURL; ?>">
-                            Prymarya 2 framework | by dancodeweb
-                         </a>
-                     </li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <div class="dropdown">
-                        <button class="dropbtn">
-                            Opções
-                            <span class="caret"></span>
-                        </button>
-                        <div class="dropdown-content">
-                            <a href="<?php echo BASEURL; ?>images">Upload de imagem</a>
-                            <a href="#" data-toggle="modal" data-target="#users" name="print_users" title="Relação de usuários">Relatório de usuários</a>
-                            <a href="<?php echo BASEURL; ?>home/logout">Sair do sistema</a>
-                        </div>
-                    </div>
-                </ul>
-            </div>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <a href="<?php echo BASEURL; ?>" class="navbar-brand">Prymarya 2 framework | by dancodeweb</a>
+        <button class="navbar-toggler" data-toggle="collapse" data-target="#ops">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="ops">
+            <u class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a href="<?php echo BASEURL; ?>images" class="nav-link">Imagens</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" data-toggle="modal" class="nav-link" data-target="#users" name="print_users" title="Relação de usuários">Relatório de usuários</a> 
+                </li>
+                <li class="nav-item">
+                    <a href="<?php echo BASEURL; ?>home/logout" class="nav-link">Sair do sistema</a>
+                </li>
+            </u>
         </div>
     </nav>
     <!-- MODAL IMPRIMIR HISTÓRICO LIGAÇÕES INICIO -->
@@ -72,8 +57,16 @@
         </div>
     </div>
 		<!-- MODAL IMPRIMIR HISTÓRICO LIGAÇÕES FIM -->
-    <div class="container">
+    <div class="container mb-3 mt-3">
       <?php $this->loadViewer($viewName, $viewData_set); ?>
     </div>
+    <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/axios/dist/axios.js"></script>
+    <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/iziToast/dist/js/iziToast.min.js"></script>
+    <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/sweetalert2@8.js"></script>
+    <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/dataTables/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/dataTables/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/bootstrap-4.3.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="<?php echo BASEURL; ?>assets/dist/all.js?cb=1567140344076"></script>
   </body>
 </html>

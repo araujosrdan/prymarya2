@@ -5,15 +5,17 @@
 <?php echo $return . " "; ?> <a href="<?php echo BASEURL; ?>/modal" class="btn btn-success">Atualizar para ver</a>
     </div>
 <?php endif; ?>
-<table class="display" id="tbUsuarios">
+<table class="table table-stripped table-bordered" style="width: 100%;" id="tbUsuarios">
     <thead>
-        <td class="header_treat">Código:</td>
-        <td class="header_treat">Img:</td>
-        <td class="header_treat">Email:</td>
-        <td class="header_treat">Nome:</td>
-        <td class="header_treat">Idade:</td>
-        <td class="header_treat">Ativo:</td>
-        <td class="header_treat" style="text-align:right">Opções</td>
+        <tr>
+            <td class="header_treat">Código:</td>
+            <td class="header_treat">Img:</td>
+            <td class="header_treat">Email:</td>
+            <td class="header_treat">Nome:</td>
+            <td class="header_treat">Idade:</td>
+            <td class="header_treat">Ativo:</td>
+            <td class="header_treat" style="text-align:right">Opções</td>
+        </tr>
     </thead>
     <tbody>
         <?php foreach($users as $usu): ?>
@@ -172,7 +174,4 @@
             }
         });
     });
-    $('#tbUsuarios')
-    .removeClass( 'display' )
-    .addClass('table table-striped table-bordered');
 </script>

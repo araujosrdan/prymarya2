@@ -12,18 +12,8 @@
         <link rel="stylesheet" type="text/css" href="<?php echo BASEURL; ?>assets/dist/styles.css?cb=1567140344076">
     </head>
     <body id="bg_login" oncontextmenu="return false">
-        <nav class="navbar navbar-inverse">
-            <div class="container">
-                <div id="navbar">
-                    <ul class="nav navbar-nav navbar-left">
-                        <li>
-                             <a href="<?php echo BASEURL; ?>">
-                                Prymarya 2 > ERRO!!
-                             </a>
-                         </li>
-                    </ul>
-                </div>
-            </div>
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+            <a href="<?php echo BASEURL; ?>" class="navbar-brand">Prymarya 2 framework | by dancodeweb</a>
         </nav>
         <div class="container">
             <div class="row">
