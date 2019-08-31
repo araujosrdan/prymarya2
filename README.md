@@ -19,13 +19,13 @@ Versão para servidores de hospedagem compartilhada!
 
 -Para a tabela foi usado o "DataTables": https://datatables.net/  
 
-- Para alertas e mensagens foi usado: 
+-Para alertas e mensagens foi usado: 
 - "iziToast": http://izitoast.marcelodolza.com/ 
 - "SweetAlert": https://sweetalert2.github.io/ 
 
-- Para ícones foi usado o "Fontawesome": https://fontawesome.com/ 
+-Para ícones foi usado o "Fontawesome": https://fontawesome.com/ 
 
-- Para manipulação de dados frontend / backend foi usado o "Axios": https://github.com/axios/axios 
+-Para manipulação de dados frontend / backend foi usado o "Axios": https://github.com/axios/axios 
 
 # Estrutura:
 - SASS para compilar CSS e Javascript. Use apenas o comando "gulp" de dentro da pasta "assets". 
