@@ -9,7 +9,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="<?php echo BASEURL; ?>assets/img/icon.png">
         <link href="<?php echo BASEURL; ?>assets/lib/bootstrap-4.3.1/css/bootstrap.min.css" rel="stylesheet" />
         <link href="<?php echo BASEURL; ?>assets/lib/iziToast/dist/css/iziToast.min.css" rel="stylesheet" />
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+        <link href="<?php echo BASEURL; ?>assets/lib/fontawesome-free-5.10.2/css/all.css" rel="stylesheet" />
         <link rel="stylesheet" type="text/css" href="<?php echo BASEURL; ?>assets/dist/styles.css?cb=1567192678032">
     </head>
     <body oncontextmenu="return false">
@@ -21,7 +21,7 @@
             <div class="logo_links" id="logo_links" style="display:none;">
                 <a href="https://github.com/danerscode" target="_blank" title="Github"><i class="fab fa-github"></i> Github</a>
                 <a href="https://danerscode.com" target="_blank" title="Site oficial"><i class="fas fa-globe"></i> Site oficial</a>
-                <a href="<?php echo BASEURL; ?>login" title="Login de acesso"><span class="glyphicon glyphicon-user"></span> Login</a>
+                <a href="<?php echo BASEURL; ?>login" title="Login de acesso"><i class="fas fa-portrait"></i> Login</a>
             </div>
         </div>
         <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/jquery-3.4.1.min.js"></script>
@@ -29,6 +29,7 @@
         <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/iziToast/dist/js/iziToast.min.js"></script>
         <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/sweetalert2@8.js"></script>
         <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/bootstrap-4.3.1/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/fontawesome-free-5.10.2/js/all.js"></script>
         <script type="text/javascript" src="<?php echo BASEURL; ?>assets/dist/all.js?cb=1567192678032"></script>
     </body>
 </html>

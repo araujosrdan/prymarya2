@@ -87,7 +87,7 @@
         </div>
     <?php endif; ?>
 <?php else: ?>
-    <div class="row">
+    <div class="">
     <h3>Imagens no sistema:</h3>
     <h1>Ops! Você ainda não postou nenhuma imagem!</h1>
         <div class="col-sm-4">

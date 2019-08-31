@@ -24,7 +24,7 @@
                 <?php if($usu['image'] != ''): ?>
                   <td align="center"><img src="<?php echo BASEURL; ?>media/user/<?php echo $usu['id_usu']; ?>/<?php echo $usu['image']; ?>" class="img-thumbail" style="height:3rem;width:3rem;" /> </td>
                 <?php else: ?>
-                  <td title="Sem imagem disponível" align="center"><span class="glyphicon glyphicon-picture"></span> </td>
+                  <td title="Sem imagem disponível" align="center"><i class="fas fa-portrait"></i></td>
                 <?php endif; ?>
                 <td><?php echo $usu['email']; ?></td>
                 <td><?php echo $usu['name']; ?></td>
@@ -35,10 +35,10 @@
                   <td>Não</td>
                 <?php endif; ?>
                 <td style="text-align:right">
-                    <a href="#" data-toggle="modal" data-target="#image<?php echo $usu['id_usu']; ?>" class="btn btn-dark" title="Editar imagem"><span class="glyphicon glyphicon-user"></span></a>
-                    <a href="#" data-toggle="modal" data-target="#edit<?php echo $usu['id_usu']; ?>" class="btn btn-dark" title="Editar registro"><span class="glyphicon glyphicon-edit"></span></a>
-                    <a href="#" data-toggle="modal" data-target="#pass<?php echo $usu['id_usu']; ?>" class="btn btn-dark" title="Editar senha"><span class="glyphicon glyphicon-check"></span></a>
-                    <a href="#" data-toggle="modal" data-target="#del<?php echo $usu['id_usu']; ?>" class="btn btn-white" title="Excluir registro"><span class="glyphicon glyphicon-remove"></span></a>
+                    <a href="#" data-toggle="modal" data-target="#image<?php echo $usu['id_usu']; ?>" class="btn btn-info" title="Editar imagem"><i class="fas fa-user"></i></a>
+                    <a href="#" data-toggle="modal" data-target="#edit<?php echo $usu['id_usu']; ?>" class="btn btn-secondary" title="Editar registro"><i class="fas fa-edit"></i></a>
+                    <a href="#" data-toggle="modal" data-target="#pass<?php echo $usu['id_usu']; ?>" class="btn btn-warning" title="Editar senha"><i class="fas fa-key"></i></a>
+                    <a href="#" data-toggle="modal" data-target="#del<?php echo $usu['id_usu']; ?>" class="btn btn-danger" title="Excluir registro"><i class="fas fa-trash"></i></a>
                 </td>
             </tr>
         <!-- MODAL NOVO INICIO -->
@@ -158,7 +158,7 @@
 </table>
 <hr />
 <a href="#" data-toggle="modal" data-target="#new" class="btn btn-primary" title="Novo registro">
-    <span class="glyphicon glyphicon-tag"></span>
+    <i class="fas fa-plus"></i>
     Novo resgistro
 </a>
 

@@ -11,6 +11,7 @@
     <link href="<?php echo BASEURL; ?>assets/lib/bootstrap-4.3.1/css/bootstrap.min.css" rel="stylesheet" />
     <link href="<?php echo BASEURL; ?>assets/lib/dataTables/css/dataTables.bootstrap.min.css" rel="stylesheet" />
     <link href="<?php echo BASEURL; ?>assets/lib/iziToast/dist/css/iziToast.min.css" rel="stylesheet" />
+    <link href="<?php echo BASEURL; ?>assets/lib/fontawesome-free-5.10.2/css/all.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="<?php echo BASEURL; ?>assets/dist/styles.css?cb=1567140344076">
   </head>
   <body oncontextmenu="return false">
@@ -34,29 +35,34 @@
         </div>
     </nav>
     <!-- MODAL IMPRIMIR HISTÓRICO LIGAÇÕES INICIO -->
-    <div class="modal fade" id="users" tabindex="-1" role="dialog" aria-labelledby="users">
+    <div class="modal fade" id="users" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                  <h4 class="modal-title text-left">Relatório de usuários cadastrados</h4>
-                </div>
-                <div class="modal-body">
-                    <form method="GET" name="usersPrint" id="usersPrint" action="<?php echo BASEURL; ?>rel/users.php" target="_blank">
-                        <div class="form-group col-sm-12">
-                            <label for="active">Ativo:</label>
-                            <input type="radio" id="active" name="active" value="Y" /> Sim
-                            <input type="radio" id="active" name="active" value="N" /> Não
-                            <input type="radio" id="active" name="active" value="A" checked="checked" /> Todos
-                        </div>
-                        <hr />
-                        <input type="submit" name="print_ligacoes_enter" id="print_ligacoes_enter" value="Gerar relatório" class="btn btn-primary"/>
-                    </form>
-                </div>
+            <div class="modal-header">
+                <h5 class="modal-title">Relatório de usuários cadastrado</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="GET" name="usersPrint" id="usersPrint" action="<?php echo BASEURL; ?>rel/users.php" target="_blank">
+                    <div class="form-group col-sm-12">
+                        <label for="active">Ativo:</label>
+                        <input type="radio" id="active" name="active" value="Y" /> Sim
+                        <input type="radio" id="active" name="active" value="N" /> Não
+                        <input type="radio" id="active" name="active" value="A" checked="checked" /> Todos
+                    </div>
+                    <hr />
+                    <input type="submit" name="print_ligacoes_enter" id="print_ligacoes_enter" value="Gerar relatório" class="btn btn-primary"/>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
             </div>
         </div>
     </div>
-		<!-- MODAL IMPRIMIR HISTÓRICO LIGAÇÕES FIM -->
+	<!-- MODAL IMPRIMIR HISTÓRICO LIGAÇÕES FIM -->
     <div class="container mb-3 mt-3">
       <?php $this->loadViewer($viewName, $viewData_set); ?>
     </div>
@@ -67,6 +73,7 @@
     <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/dataTables/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/dataTables/js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/bootstrap-4.3.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/fontawesome-free-5.10.2/js/all.js"></script>
     <script type="text/javascript" src="<?php echo BASEURL; ?>assets/dist/all.js?cb=1567140344076"></script>
   </body>
 </html>
