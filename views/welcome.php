@@ -10,7 +10,7 @@
         <link href="<?php echo BASEURL; ?>assets/lib/bootstrap-4.3.1/css/bootstrap.min.css" rel="stylesheet" />
         <link href="<?php echo BASEURL; ?>assets/lib/iziToast/dist/css/iziToast.min.css" rel="stylesheet" />
         <link href="<?php echo BASEURL; ?>assets/lib/fontawesome-free-5.10.2/css/all.css" rel="stylesheet" />
-        <link rel="stylesheet" type="text/css" href="<?php echo BASEURL; ?>assets/dist/styles.css?cb=1567192678032">
+        <link href="<?php echo BASEURL; ?>assets/css/style.css" rel="stylesheet" />
     </head>
     <body oncontextmenu="return false">
         <div class="container">
@@ -30,6 +30,6 @@
         <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/sweetalert2@8.js"></script>
         <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/bootstrap-4.3.1/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/fontawesome-free-5.10.2/js/all.js"></script>
-        <script type="text/javascript" src="<?php echo BASEURL; ?>assets/dist/all.js?cb=1567192678032"></script>
+        <script type="text/javascript" src="<?php echo BASEURL; ?>assets/js/script.js"></script>
     </body>
 </html>

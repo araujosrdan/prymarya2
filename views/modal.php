@@ -1,10 +1,35 @@
 <h2><a href="<?php echo BASEURL; ?>" class="" title="">Home</a> > CRUD via Modal</h2>
 <hr />
-<?php if(!empty($return)): ?>
-    <div class="alert alert-success" id="return_message">
-<?php echo $return . " "; ?> <a href="<?php echo BASEURL; ?>/modal" class="btn btn-success">Atualizar para ver</a>
+<a href="#" data-toggle="modal" data-target="#new" class="btn btn-primary" title="Novo registro">
+    <i class="fas fa-plus"></i>
+    Novo resgistro
+</a>
+<!-- MODAL NOVO INICIO -->
+<div class="modal fade" id="new" tabindex="-1" role="dialog" aria-labelledby="NovoRegistro" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form method="POST" name="newUser">
+                    <div class="form-group">
+                        <p>Novo registro de usuário</p>
+                        <label for="name">Nome:</label>
+                        <input type="text" id="new_user_name" name="new_user_name" class="form-control" />
+                        <label for="username">Email:</label>
+                        <input type="email" id="new_user_email" name="new_user_email" class="form-control" />
+                        <label for="age">Idade:</label>
+                        <input type="text" id="new_user_age" name="new_user_age" class="form-control" />
+                        <label for="pass">Senha:</label>
+                        <input type="password" id="new_user_pass" name="new_user_pass" class="form-control" />
+                    </div>
+                    <button type="button" class="btn btn-success" onclick="setNewUser()">Confirmar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                </form>
+            </div>
+        </div>
     </div>
-<?php endif; ?>
+</div>
+<!-- MODAL NOVO FIM -->
+<hr />
 <table class="table table-stripped table-bordered" style="width: 100%;" id="tbUsuarios">
     <thead>
         <tr>
@@ -41,45 +66,21 @@
                     <a href="#" data-toggle="modal" data-target="#del<?php echo $usu['id_usu']; ?>" class="btn btn-danger" title="Excluir registro"><i class="fas fa-trash"></i></a>
                 </td>
             </tr>
-        <!-- MODAL NOVO INICIO -->
-        <div class="modal fade" id="new" tabindex="-1" role="dialog" aria-labelledby="NovoRegistro">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <form method="POST" name="newUser" onsubmit="return submitLock();">
-                            <div class="form-group">
-                                <p>Novo registro de usuário</p>
-                                <label for="name">Nome:</label>
-                                <input type="text" id="name" name="name" class="form-control" required="required" />
-                                <label for="username">Email:</label>
-                                <input type="email" id="username" name="username" class="form-control" required="required" />
-                                <label for="age">Idade:</label>
-                                <input type="text" id="age" name="age" class="form-control" required="required" />
-                                <label for="pass">Senha:</label>
-                                <input type="password" id="pass" name="pass" class="form-control" required="required" />
-                            </div>
-                            <input type="submit" value="Confirmar" id="newUserDone" name="newUserDone" class="btn btn-success" />
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- MODAL NOVO FIM -->
         <!-- MODAL IMAGEM INICIO -->
         <div class="modal fade" id="image<?php echo $usu['id_usu']; ?>" tabindex="-1" role="dialog" aria-labelledby="EditarRegistro">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <form method="POST" name="imagetUser" enctype="multipart/form-data" onsubmit="return submitLock();">
+                        <form method="POST" name="imagetUser" enctype="multipart/form-data">
                             <div class="form-group">
                                 <p>Editar imagem de usuário</p>
                                 <label for="name">Nome:</label>
-                                <input type="text" id="name" name="name" class="form-control" value="<?php echo $usu['name']; ?>" readonly />
+                                <input type="text" name="name" class="form-control" value="<?php echo $usu['name']; ?>" readonly />
                                 <label for="image">Nova imagem:</label>
-                                <input type="file" accept="image/*" name="image" id="image" class="form-control" />
-                                <input type="hidden" name="id_usu" id="id_usu" value="<?php echo $usu['id_usu']; ?>" />
+                                <input type="file" accept="image/*" name="image" class="form-control" />
+                                <input type="hidden" name="id_usu" value="<?php echo $usu['id_usu']; ?>" />
                             </div>
-                            <input type="submit" value="Atualizar imagem" id="imageUserDone" name="imageUserDone" class="btn btn-primary" />
+                            <input type="submit" value="Atualizar imagem" name="imageUserDone" class="btn btn-primary" />
                         </form>
                     </div>
                 </div>
@@ -91,22 +92,22 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <form method="POST" name="editUser" onsubmit="return submitLock();">
+                        <form method="POST" name="editUser">
                             <div class="form-group">
                                 <p>Editar registro de usuário</p>
                                 <label for="active">Ativo:</label>
-                                <input type="radio" id="active" name="active" value="Y" <?php echo ($usu['active'] == "Y"?'checked="checked"':''); ?>> Sim
-                                <input type="radio" id="active" name="active" value="N"<?php echo ($usu['active'] == "N"?'checked="checked"':''); ?>> Não
+                                <input type="radio" name="active" value="Y" <?php echo ($usu['active'] == "Y"?'checked="checked"':''); ?>> Sim
+                                <input type="radio" name="active" value="N"<?php echo ($usu['active'] == "N"?'checked="checked"':''); ?>> Não
                                 <br />
                                 <label for="name">Nome:</label>
-                                <input type="text" id="name" name="name" class="form-control" required="required" value="<?php echo $usu['name']; ?>" />
+                                <input type="text" name="name" class="form-control" required="required" value="<?php echo $usu['name']; ?>" />
                                 <label for="username">Email:</label>
-                                <input type="email" id="username" name="username" class="form-control" required="required" value="<?php echo $usu['email']; ?>" />
+                                <input type="email" name="username" class="form-control" required="required" value="<?php echo $usu['email']; ?>" />
                                 <label for="age">Idade:</label>
-                                <input type="text" id="age" name="age" class="form-control" required="required" value="<?php echo $usu['age']; ?>" />
-                                <input type="hidden" name="id" id="id" value="<?php echo $usu['id_usu']; ?>" />
+                                <input type="text" name="age" class="form-control" required="required" value="<?php echo $usu['age']; ?>" />
+                                <input type="hidden" name="id" value="<?php echo $usu['id_usu']; ?>" />
                             </div>
-                            <input type="submit" value="Atualizar" id="editUserDone" name="editUserDone" class="btn btn-primary" />
+                            <input type="submit" value="Atualizar" name="editUserDone" class="btn btn-primary" />
                         </form>
                     </div>
                 </div>
@@ -118,16 +119,16 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <form method="POST" name="passEdit" onsubmit="return submitLock();">
+                        <form method="POST" name="passEdit">
                             <div class="form-group">
                                 <p>Editar senha de usuário</p>
                                 <label for="name">Nome:</label>
-                                <input type="text" id="name" name="name" class="form-control" readonly value="<?php echo $usu['name']; ?>" />
-                                <input type="text" name="id" id="id" value="<?php echo $usu['id_usu']; ?>" style="display:none;" />
+                                <input type="text" name="name" class="form-control" readonly value="<?php echo $usu['name']; ?>" />
+                                <input type="text" name="id" value="<?php echo $usu['id_usu']; ?>" style="display:none;" />
                                 <label for="pass">Nova senha:</label>
-                                <input type="password" id="pass" name="pass" class="form-control" required="required" />
+                                <input type="password" name="pass" class="form-control" required="required" />
                             </div>
-                            <input type="submit" value="Atualizar" id="passEditDone" name="passEditDone" class="btn btn-primary" />
+                            <input type="submit" value="Atualizar" name="passEditDone" class="btn btn-primary" />
                         </form>
                     </div>
                 </div>
@@ -139,14 +140,14 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <form method="POST" name="delUser" onsubmit="return submitLock();">
+                        <form method="POST" name="delUser">
                             <div class="form-group">
                                 <p>Excluir registro de usuário</p>
                                 <label for="name">Nome:</label>
-                                <input type="text" id="name" name="name" class="form-control" required="required" value="<?php echo $usu['name']; ?>" readonly />
-                                <input type="text" name="id" id="id" value="<?php echo $usu['id_usu']; ?>" style="display:none;" />
+                                <input type="text" name="name" class="form-control" required="required" value="<?php echo $usu['name']; ?>" readonly />
+                                <input type="text" name="id" value="<?php echo $usu['id_usu']; ?>" style="display:none;" />
                             </div>
-                            <input type="submit" value="Excluir" id="delUserDone" name="delUserDone" class="btn btn-danger" />
+                            <input type="submit" value="Excluir" name="delUserDone" class="btn btn-danger" />
                         </form>
                     </div>
                 </div>
@@ -157,21 +158,105 @@
     </tbody>
 </table>
 <hr />
-<a href="#" data-toggle="modal" data-target="#new" class="btn btn-primary" title="Novo registro">
-    <i class="fas fa-plus"></i>
-    Novo resgistro
-</a>
 
-<script>
-    $(document).ready(function() {
-        $('#tbUsuarios').DataTable({
-            "language": {
-                "lengthMenu": "Mostrando _MENU_ registros por página",
-                "zeroRecords": "Nada encontrado",
-                "info": "Mostrando página _PAGE_ de _PAGES_",
-                "infoEmpty": "Nenhum registro disponível",
-                "infoFiltered": "(filtrado de _MAX_ registros no total)"
-            }
-        });
+<script type="text/javascript">
+    var table = document.getElementById("tbUsuarios");  
+    table.DataTable({
+        "pageLength" : 10,
+        "filter" : true,
+        "deferRender" : true,
+        "scrollY" : 200,
+        "scrollCollapse" : true,
+        "scroller" : true,
+        "data" : data,
+        "language": {
+            "lengthMenu": "Mostrando _MENU_ registros por página",
+            "zeroRecords": "Nada encontrado",
+            "info": "Mostrando página _PAGE_ de _PAGES_",
+            "infoEmpty": "Nenhum registro disponível",
+            "infoFiltered": "(filtrado de _MAX_ registros no total)"
+        }
     });
+    function setNewUser(){
+        var new_user_name = $("#new_user_name").val();
+        var new_user_email = $("#new_user_email").val();
+        var new_user_age = $("#new_user_age").val();
+        var new_user_pass = $("#new_user_pass").val();
+
+        if (new_user_name == "" || typeof(new_user_name) == "undefined") {
+            $('input[name="new_user_name"]').focus();
+            iziToast.error({
+                title: 'Ops',
+                message: "Campo obrigatório!"
+            });
+            return false;
+        }
+
+        if (new_user_email == "" || typeof(new_user_email) == "undefined") {
+            $('input[name="new_user_email"]').focus();
+            iziToast.error({
+                title: 'Ops',
+                message: "Campo obrigatório!"
+            });
+            return false;
+        }
+
+        if (new_user_age == "" || typeof(new_user_age) == "undefined") {
+            $('input[name="new_user_age"]').focus();
+            iziToast.error({
+                title: 'Ops',
+                message: "Campo obrigatório!"
+            });
+            return false;
+        }
+
+        if (new_user_pass == "" || typeof(new_user_pass) == "undefined") {
+            $('input[name="new_user_pass"]').focus();
+            iziToast.error({
+                title: 'Ops',
+                message: "Campo obrigatório!"
+            });
+            return false;
+        }
+
+        let items = new URLSearchParams();
+        items.append("new_user_name", new_user_name);
+        items.append("new_user_email", new_user_email);
+        items.append("new_user_age", new_user_age);
+        items.append("new_user_pass", new_user_pass);
+
+        axios({
+            method: "POST",
+            url: "modal/setNewUser",
+            data: items
+        }).then(res => {
+            var data_return = JSON.stringify(res.data);
+				response = JSON.parse(data_return);
+            
+            if (response.code == "02") {
+                $("#new").modal("hide");
+                iziToast.info({
+                        title: 'Ok!',
+                        message: response.message
+                });
+                location.reload();
+            } else if (response.code == "01") {
+                iziToast.error({
+                        title: 'Ops... ',
+                        message: response.message
+                });
+                return false;
+            } else {
+                iziToast.error({
+                        title: 'Ops... ',
+                        message: "Ocorreu algum problema!"
+                });
+                return false;
+            }
+
+        }).catch(function(error){
+            console.log(error);
+        });
+
+    }
 </script>

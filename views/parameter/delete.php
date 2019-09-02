@@ -1,7 +1,7 @@
 <a href="<?php echo BASEURL; ?>parameter" class="" title="">Voltar</a> <br />
 <?php foreach($user_selected as $usu): ?>
     <div class="form_design_one">
-        <form method="POST" name="delUser" onsubmit="return submitLock();">
+        <form method="POST" name="delUser">
             <div class="form-group">
                 <p>Excluir registro de usuário</p>
                 <label for="name">Nome:</label>

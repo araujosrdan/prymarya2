@@ -1,6 +1,6 @@
 <a href="<?php echo BASEURL; ?>parameter" class="" title="">Voltar</a> <br />
 <div class="form_design_one">
-    <form method="POST" name="newUser" onsubmit="return submitLock();">
+    <form method="POST" name="newUser">
         <div class="form-group">
             <p>Novo registro de usuário</p>
             <?php if(!empty($return)): ?>

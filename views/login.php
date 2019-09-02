@@ -10,13 +10,13 @@
         <link href="<?php echo BASEURL; ?>assets/lib/bootstrap-4.3.1/css/bootstrap.min.css" rel="stylesheet" />
         <link href="<?php echo BASEURL; ?>assets/lib/iziToast/dist/css/iziToast.min.css" rel="stylesheet" />
         <link href="<?php echo BASEURL; ?>assets/lib/fontawesome-free-5.10.2/css/all.css" rel="stylesheet" />
-        <link rel="stylesheet" type="text/css" href="<?php echo BASEURL; ?>assets/dist/styles.css?cb=1567192678032">
+        <link href="<?php echo BASEURL; ?>assets/css/style.css" rel="stylesheet" />
     </head>
     <body oncontextmenu="return false">
         <div class="container">
             <div class="login_design">
                 <p>Company login:</p>
-                <form method="post" onsubmit="return submitLock();">
+                <form method="post">
                     <div class="form-group">
                         <label for="email">Email:</label>
                         <input type="email" name="username" id="username" class="form-control" required="required" />
@@ -45,7 +45,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <form method="POST" name="newUser" onsubmit="return submitLock();">
+                        <form method="POST" name="newUser">
                             <div class="form-group">
                                 <p>Novo registro de usuário</p>
                                 <label for="name">Nome:</label>
@@ -69,7 +69,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <form method="POST" name="new_password" onsubmit="return submitLock();">
+                        <form method="POST" name="new_password">
                             <div class="form-group">
                                 <p>Esqueceu sua senha?</p>
                                 <label for="username">Email:</label>
@@ -90,6 +90,6 @@
         <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/sweetalert2@8.js"></script>
         <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/bootstrap-4.3.1/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/fontawesome-free-5.10.2/js/all.js"></script>
-        <script type="text/javascript" src="<?php echo BASEURL; ?>assets/dist/all.js?cb=1567192678032"></script>
+        <script type="text/javascript" src="<?php echo BASEURL; ?>assets/js/script.js"></script>
     </body>
 </html>

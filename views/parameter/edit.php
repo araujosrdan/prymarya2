@@ -1,7 +1,7 @@
 <a href="<?php echo BASEURL; ?>parameter" class="" title="">Voltar</a> <br />
 <?php foreach($user_selected as $usu): ?>
     <div class="form_design_one">
-        <form method="POST" name="newUser" onsubmit="return submitLock();">
+        <form method="POST" name="newUser">
             <div class="form-group">
                 <p>Editar registro de usuário com ID: <?php echo $usu['id_usu']; ?></p>
                 <?php if(!empty($return)): ?>

@@ -7,7 +7,7 @@
         <?php echo $return . " "; ?> <button id="return_message_btn" class="btn btn-primary">Ok</button>
             </div>
         <?php endif; ?>
-        <form method="POST" name="passEdit" onsubmit="return submitLock();">
+        <form method="POST" name="passEdit">
             <div class="form-group">
                 <label for="name">Nome:</label>
                 <input type="text" id="name" name="name" class="form-control" readonly value="<?php echo $usu['name']; ?>" />

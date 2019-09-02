@@ -1,20 +1,22 @@
-//Rotina para impedir mais de um clique em formulários
-function submitLock() {
-    if (!statSend) {
-        statSend = true;
-        return true;
-    } else {
-        alert('Você já clicou! Aguarde por favor.');
-        return false;
-    }
-}
-
-//Rotina para tratar mensagem de retorno positivo
+//Carregando Datatables
 $(document).ready(function() {
-    $('#return_message_btn').click(function() {
-        $('#return_message').fadeOut('slow');
-        return false;
-    });
+	function loadUserTable(){
+        $('#tbUsuarios').DataTable({
+            "pageLength" : 10,
+            "filter" : true,
+            "deferRender" : true,
+            "scrollY" : 200,
+            "scrollCollapse" : true,
+            "scroller" : true,
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ registros por página",
+                "zeroRecords": "Nada encontrado",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "Nenhum registro disponível",
+                "infoFiltered": "(filtrado de _MAX_ registros no total)"
+            }
+        });
+    }
 });
 
 //Mensagem para erro ao logar no sistema.

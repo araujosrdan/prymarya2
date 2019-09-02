@@ -10,7 +10,7 @@
         $users = new usersDB();
         $users->users_check_session();
         global $user_in;
-        $user_in = intval($_SESSION['crud_session_log']);
+        $user_in = intval($_SESSION['prymarya2_session_log']);
     }
 
     public function index(){

@@ -2,7 +2,7 @@
     <div class="row">
         <h3>Imagens no sistema:</h3>
         <div class="col-sm-4">
-            <form method="POST" enctype="multipart/form-data" onsubmit="return submitLock();">
+            <form method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="images">Escolha sua(s) imagem(ns):</label>
                     <input type="file" accept="image/*" name="images[]" id="images[]" multiple class="form-control" />
@@ -43,7 +43,7 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-body">
-                            <form method="POST" name="editUser" onsubmit="return submitLock();">
+                            <form method="POST" name="editUser">
                                 <div class="form-group">
                                     <p>Editar imagem</p>
                                     <label for="name">Nome:</label>
@@ -65,7 +65,7 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-body">
-                            <form method="POST" name="editUser" onsubmit="return submitLock();">
+                            <form method="POST" name="editUser">
                                 <div class="form-group">
                                     <p>Deletar imagem</p>
                                     <img src="<?php echo BASEURL; ?>media/images/<?php echo $var['fid_usu']; ?>/<?php echo $var['addr']; ?>" class="" />
@@ -91,7 +91,7 @@
     <h3>Imagens no sistema:</h3>
     <h1>Ops! Você ainda não postou nenhuma imagem!</h1>
         <div class="col-sm-4">
-            <form method="POST" enctype="multipart/form-data" onsubmit="return submitLock();">
+            <form method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="images">Escolha sua(s) imagem(ns):</label>
                     <input type="file" accept="image/*" name="images[]" id="images[]" multiple class="form-control" />

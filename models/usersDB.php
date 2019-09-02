@@ -6,7 +6,7 @@
   {
     //QUERIES DE LEITURA
     public function users_check_session(){
-      if (!isset($_SESSION['crud_session_log']) || (isset($_SESSION['crud_session_log'])) && empty($_SESSION['crud_session_log'])) {
+      if (!isset($_SESSION['prymarya2_session_log']) || (isset($_SESSION['prymarya2_session_log'])) && empty($_SESSION['prymarya2_session_log'])) {
         header("Location: " . BASEURL . "welcome");
         exit;
       }
@@ -65,7 +65,7 @@
               if(password_verify($pass, $query['pass'])){
                 if ($query['blocked'] == 'N') {
                   unset($_SESSION['crud_sessionlogin_log']);
-                  $_SESSION['crud_session_log'] = $query['id_usu'];
+                  $_SESSION['prymarya2_session_log'] = $query['id_usu'];
                   header("Location: " . BASEURL . "home");
                   exit;
                 } else {
@@ -86,51 +86,57 @@
     }
 
     public function logOff(){
-      unset($_SESSION['crud_session_log']);
+      unset($_SESSION['prymarya2_session_log']);
       header("Location: " . BASEURL);
     }
 
     //QUERIES DE MODIFICAÇÃO
-    public function addUser($name, $username, $pass, $age, $flag){
-      if(isset($_SESSION['crud_session_log'])){
-        $query = "SELECT * FROM users WHERE email = :email";
+    public function addUser($new_user_name, $new_user_email, $new_user_age, $new_user_pass, $flag){
+      if(isset($_SESSION['prymarya2_session_log'])){
+        $query = "SELECT * FROM users WHERE email = :new_user_email";
         //echo $query;exit;
         $query = $this->db->prepare($query);
-        $query->bindValue(":email", $username);
+        $query->bindValue(":new_user_email", $new_user_email);
         $query->execute();
         if ($query->rowCount() > 0) {
-          echo "<script>alert('Ops! Este usuário já existe!')</script>";
+          $response = array(
+            "code" => "01",
+            "message" => "Email já existe no sistema!"
+          );
+          echo json_encode($response);
+          exit;
         } else {
-          $query = "INSERT INTO users SET name = :name, email = :email, pass = :pass, age = :age";
+          $query = "INSERT INTO users SET name = :new_user_name, email = :new_user_email, pass = :new_user_pass, age = :new_user_age";
           //echo $query;exit;
           $query = $this->db->prepare($query);
-          $query->bindValue(":name", $name);
-          $query->bindValue(":email", $username);
-          $query->bindValue(":pass", $pass);
-          $query->bindValue(":age", $age);
+          $query->bindValue(":new_user_name", $new_user_name);
+          $query->bindValue(":new_user_email", $new_user_email);
+          $query->bindValue(":new_user_pass", $new_user_pass);
+          $query->bindValue(":new_user_age", $new_user_age);
           $query->execute();
-          if ($flag === "modal") {
-            header("Refresh:0");
-          } else {
-            return "Registro efetuado com sucesso!";
-          }
+          $response = array(
+            "code" => "02",
+            "message" => "Registro gravado com sucesso!"
+          );
+          echo json_encode($response);
+          exit();
         }
       } else {
-        $query = "SELECT * FROM users WHERE email = :email";
+        $query = "SELECT * FROM users WHERE email = :new_user_email";
         //echo $query;exit;
         $query = $this->db->prepare($query);
-        $query->bindValue(":email", $username);
+        $query->bindValue(":new_user_email", $new_user_email);
         $query->execute();
         if ($query->rowCount() > 0) {
           echo "<script>alert('Ops! Este usuário já existe!')</script>";
         } else {
-          $query = "INSERT INTO users SET name = :name, email = :email, pass = :pass, age = :age";
+          $query = "INSERT INTO users SET name = :new_user_name, email = :new_user_email, pass = :new_user_pass, age = :new_user_age";
           //echo $query;exit;
           $query = $this->db->prepare($query);
-          $query->bindValue(":name", $name);
-          $query->bindValue(":email", $username);
-          $query->bindValue(":pass", $pass);
-          $query->bindValue(":age", $age);
+          $query->bindValue(":new_user_name", $new_user_name);
+          $query->bindValue(":new_user_email", $new_user_email);
+          $query->bindValue(":new_user_pass", $new_user_pass);
+          $query->bindValue(":new_user_age", $new_user_age);
           $query->execute();
           header("Location: " . BASEURL . "login");
         }
@@ -222,7 +228,7 @@
     }
 
     public function passEdit($pass, $id, $flag){
-      if (isset($_SESSION['crud_session_log'])) {
+      if (isset($_SESSION['prymarya2_session_log'])) {
         $query = "UPDATE users SET pass = :pass WHERE id_usu = :id";
         //echo $query;exit;
         $query = $this->db->prepare($query);
@@ -255,11 +261,11 @@
     }
 
     public function delUser($id){
-      if ($_SESSION['crud_session_log'] === $id) {
+      if ($_SESSION['prymarya2_session_log'] === $id) {
         $query = "DELETE FROM users WHERE id_usu = '$id'";
         //echo $query;exit;
         $query = $this->db->query($query);
-        unset($_SESSION['crud_session_log']);
+        unset($_SESSION['prymarya2_session_log']);
         header("Location: " . BASEURL);
       } else {
         $query = "DELETE FROM users WHERE id_usu = '$id'";

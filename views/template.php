@@ -12,7 +12,7 @@
     <link href="<?php echo BASEURL; ?>assets/lib/dataTables/css/dataTables.bootstrap.min.css" rel="stylesheet" />
     <link href="<?php echo BASEURL; ?>assets/lib/iziToast/dist/css/iziToast.min.css" rel="stylesheet" />
     <link href="<?php echo BASEURL; ?>assets/lib/fontawesome-free-5.10.2/css/all.css" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="<?php echo BASEURL; ?>assets/dist/styles.css?cb=1567140344076">
+    <link href="<?php echo BASEURL; ?>assets/css/style.css" rel="stylesheet" />
   </head>
   <body oncontextmenu="return false">
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
@@ -74,6 +74,6 @@
     <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/dataTables/js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/bootstrap-4.3.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="<?php echo BASEURL; ?>assets/lib/fontawesome-free-5.10.2/js/all.js"></script>
-    <script type="text/javascript" src="<?php echo BASEURL; ?>assets/dist/all.js?cb=1567140344076"></script>
+    <script type="text/javascript" src="<?php echo BASEURL; ?>assets/js/script.js"></script>
   </body>
 </html>
