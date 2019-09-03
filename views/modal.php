@@ -30,7 +30,7 @@
 </div>
 <!-- MODAL NOVO FIM -->
 <hr />
-<table class="table table-stripped table-bordered" style="width: 100%;" id="tbUsuarios">
+<table class="table table-striped table-bordered" style="width: 100%;" id="tbUsuarios">
     <thead>
         <tr>
             <th class="header_treat">Código:</th>
@@ -67,7 +67,7 @@
                 </td>
             </tr>
         <!-- MODAL IMAGEM INICIO -->
-        <div class="modal fade" id="image<?php echo $usu['id_usu']; ?>" tabindex="-1" role="dialog" aria-labelledby="EditarRegistro">
+        <div class="modal fade" id="image<?php echo $usu['id_usu']; ?>" tabindex="-1" role="dialog" aria-labelledby="EditarRegistro" data-backdrop="static">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -165,7 +165,7 @@
             "pageLength" : 10,
             "filter" : true,
             "deferRender" : true,
-            "scrollY" : 200,
+            "scrollY" : 500,
             "scrollCollapse" : true,
             "scroller" : true,
             "language": {
@@ -236,11 +236,12 @@
             
             if (response.code == "02") {
                 $("#new").modal("hide");
-                iziToast.info({
-                        title: 'Ok!',
-                        message: response.message
-                });
-                location.reload();
+                Swal.fire({
+                    type: "success",
+                    text: "Salvo com sucesso!"
+                }).then(() => {
+                    location.reload();
+                });                             
             } else if (response.code == "01") {
                 iziToast.error({
                         title: 'Ops... ',

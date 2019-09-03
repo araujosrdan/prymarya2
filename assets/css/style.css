@@ -10,6 +10,7 @@
       background: #EEE;
       height: auto;
   }
+  
   img{
     display: block;
     width: 100%;
@@ -17,6 +18,11 @@
     flex: 0 1 60vw;
     align-items: center;
   }
+
+  h2{
+    padding-top: 20px;
+  }
+
   .form_design_one{
       display: flex;
       align-items: center;
