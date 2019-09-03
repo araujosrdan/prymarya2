@@ -33,13 +33,13 @@
 <table class="table table-stripped table-bordered" style="width: 100%;" id="tbUsuarios">
     <thead>
         <tr>
-            <td class="header_treat">Código:</td>
-            <td class="header_treat">Img:</td>
-            <td class="header_treat">Email:</td>
-            <td class="header_treat">Nome:</td>
-            <td class="header_treat">Idade:</td>
-            <td class="header_treat">Ativo:</td>
-            <td class="header_treat" style="text-align:right">Opções</td>
+            <th class="header_treat">Código:</th>
+            <th class="header_treat">Img:</th>
+            <th class="header_treat">Email:</th>
+            <th class="header_treat">Nome:</th>
+            <th class="header_treat">Idade:</th>
+            <th class="header_treat">Ativo:</th>
+            <th class="header_treat" style="text-align:right">Opções</th>
         </tr>
     </thead>
     <tbody>
@@ -77,10 +77,10 @@
                                 <label for="name">Nome:</label>
                                 <input type="text" name="name" class="form-control" value="<?php echo $usu['name']; ?>" readonly />
                                 <label for="image">Nova imagem:</label>
-                                <input type="file" accept="image/*" name="image" class="form-control" />
-                                <input type="hidden" name="id_usu" value="<?php echo $usu['id_usu']; ?>" />
+                                <input type="file" accept="image/*" name="user_new_picture" class="form-control" />
                             </div>
-                            <input type="submit" value="Atualizar imagem" name="imageUserDone" class="btn btn-primary" />
+                            <button type="button" class="btn btn-success" onclick="setUserPicture(<?php echo $usu['id_usu']; ?>)">Confirmar</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                         </form>
                     </div>
                 </div>
@@ -160,23 +160,24 @@
 <hr />
 
 <script type="text/javascript">
-    var table = document.getElementById("tbUsuarios");  
-    table.DataTable({
-        "pageLength" : 10,
-        "filter" : true,
-        "deferRender" : true,
-        "scrollY" : 200,
-        "scrollCollapse" : true,
-        "scroller" : true,
-        "data" : data,
-        "language": {
-            "lengthMenu": "Mostrando _MENU_ registros por página",
-            "zeroRecords": "Nada encontrado",
-            "info": "Mostrando página _PAGE_ de _PAGES_",
-            "infoEmpty": "Nenhum registro disponível",
-            "infoFiltered": "(filtrado de _MAX_ registros no total)"
-        }
+    $(document).ready( function () {
+            $('#tbUsuarios').DataTable({
+            "pageLength" : 10,
+            "filter" : true,
+            "deferRender" : true,
+            "scrollY" : 200,
+            "scrollCollapse" : true,
+            "scroller" : true,
+            "language": {
+                "lengthMenu": "Mostrando _MENU_  registros por página",
+                "zeroRecords": "Nada encontrado",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "Nenhum registro disponível",
+                "infoFiltered": "(filtrado de _MAX_ registros no total)"
+            }
+        });
     });
+
     function setNewUser(){
         var new_user_name = $("#new_user_name").val();
         var new_user_email = $("#new_user_email").val();
@@ -258,5 +259,57 @@
             console.log(error);
         });
 
+    }
+
+    function setUserPicture(id_usu){
+        var user_new_picture = $('input[name="user_new_picture"]')[0].files[0];
+        
+        if (user_new_picture == "" || typeof(user_new_picture) == "undefined") {
+            $('input[name="user_new_picture"]').focus();
+            iziToast.error({
+                title: 'Ops',
+                message: "Campo obrigatório!"
+            });
+            return false;
+        } else {
+            $("#loading_post").show();
+        }
+
+        var items = new FormData();
+        items.append("user_pic", user_pic);
+
+        axios({
+            method: "POST",
+            url: "config/editProfilePic",
+            data: items
+        }).then(res => {
+            var data_return = JSON.stringify(res.data);
+                response = JSON.parse(data_return);
+
+            if (response.code == "12") {
+                $("#loading_post").hide();
+                $('#profile_user_pic_change').hide("slow");
+                $('#profile_user_pic').show("slow");
+                iziToast.success({
+                    title: 'Ok!',
+                    message: response.message
+                });
+                var file_path = $("#pi_path").val();
+                $("#user_image").attr("src", file_path + "/" + response.image);
+				$("#user_image_template").attr("src", file_path + "/" + response.image);
+            }
+
+            if(response.code == "13"){
+                $("#loading_post").hide();
+                iziToast.error({
+                    title: 'Ops... ',
+                    message: response.message
+                });
+                return false;
+            }
+
+        }).catch(function(error){
+            console.log(error);
+        });
     }
 </script>
