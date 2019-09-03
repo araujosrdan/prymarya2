@@ -18,13 +18,13 @@
       $users = new usersDB();
       $data_set['users'] = $users->getUsers();
 
-    if (isset($_POST['imageUserDone'])) {
-      $image = $_FILES['image'];
-      $id_usu = $_POST['id_usu'];
-      $flag = "modal";
-      $users = new usersDB();
-      $users->imageUser($image, $id_usu, $flag);
-    }
+      if (isset($_POST['imageUserDone'])) {
+        $image = $_FILES['image'];
+        $id_usu = $_POST['id_usu'];
+        $flag = "modal";
+        $users = new usersDB();
+        $users->imageUser($image, $id_usu, $flag);
+      }
 
     if (isset($_POST['editUserDone'])) {
       if (filter_var($_POST['username'], FILTER_VALIDATE_EMAIL)) {

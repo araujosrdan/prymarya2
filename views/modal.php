@@ -67,20 +67,20 @@
                 </td>
             </tr>
         <!-- MODAL IMAGEM INICIO -->
-        <div class="modal fade" id="image<?php echo $usu['id_usu']; ?>" tabindex="-1" role="dialog" aria-labelledby="EditarRegistro" data-backdrop="static">
+        <div class="modal fade" id="image<?php echo $usu['id_usu']; ?>" tabindex="-1" role="dialog" aria-labelledby="EditarRegistro">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <form method="POST" name="imagetUser" enctype="multipart/form-data">
+                        <form method="POST" name="imagetUser" enctype="multipart/form-data" onsubmit="return submitLock();">
                             <div class="form-group">
                                 <p>Editar imagem de usuário</p>
                                 <label for="name">Nome:</label>
                                 <input type="text" name="name" class="form-control" value="<?php echo $usu['name']; ?>" readonly />
                                 <label for="image">Nova imagem:</label>
-                                <input type="file" accept="image/*" name="user_new_picture" class="form-control" />
+                                <input type="file" accept="image/*" name="image" class="form-control" />
+                                <input type="hidden" name="id_usu" value="<?php echo $usu['id_usu']; ?>" />
                             </div>
-                            <button type="button" class="btn btn-success" onclick="setUserPicture(<?php echo $usu['id_usu']; ?>)">Confirmar</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                            <input type="submit" value="Atualizar imagem" name="imageUserDone" class="btn btn-primary" />
                         </form>
                     </div>
                 </div>
@@ -262,55 +262,13 @@
 
     }
 
-    function setUserPicture(id_usu){
-        var user_new_picture = $('input[name="user_new_picture"]')[0].files[0];
-        
-        if (user_new_picture == "" || typeof(user_new_picture) == "undefined") {
-            $('input[name="user_new_picture"]').focus();
-            iziToast.error({
-                title: 'Ops',
-                message: "Campo obrigatório!"
-            });
-            return false;
-        } else {
-            $("#loading_post").show();
-        }
-
-        var items = new FormData();
-        items.append("user_pic", user_pic);
-
-        axios({
-            method: "POST",
-            url: "config/editProfilePic",
-            data: items
-        }).then(res => {
-            var data_return = JSON.stringify(res.data);
-                response = JSON.parse(data_return);
-
-            if (response.code == "12") {
-                $("#loading_post").hide();
-                $('#profile_user_pic_change').hide("slow");
-                $('#profile_user_pic').show("slow");
-                iziToast.success({
-                    title: 'Ok!',
-                    message: response.message
-                });
-                var file_path = $("#pi_path").val();
-                $("#user_image").attr("src", file_path + "/" + response.image);
-				$("#user_image_template").attr("src", file_path + "/" + response.image);
-            }
-
-            if(response.code == "13"){
-                $("#loading_post").hide();
-                iziToast.error({
-                    title: 'Ops... ',
-                    message: response.message
-                });
-                return false;
-            }
-
-        }).catch(function(error){
-            console.log(error);
-        });
+    function confirmImageSend(id_usu){
+        $("#image" + id_usu).modal("hide");
+        Swal.fire({
+            type: "success",
+            text: "Salvo com sucesso!"
+        }).then(() => {
+            location.reload();
+        });   
     }
 </script>

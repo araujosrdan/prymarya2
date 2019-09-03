@@ -24,6 +24,7 @@
     <script type="text/javascript" src="<?php echo BASEURL; ?>assets/js/script.js"></script>
   </head>
   <body oncontextmenu="return false">
+  <img src="<?php echo BASEURL; ?>assets/img/loading.gif" alt="Loading page" id="loading_post" style="display: none;position: absolute;z-index: 999;width: 300px;height: 300px;top: 50%;left: 50%;" />
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
         <a href="<?php echo BASEURL; ?>" class="navbar-brand">Prymarya 2 framework | by dancodeweb</a>
         <button class="navbar-toggler" data-toggle="collapse" data-target="#ops">
