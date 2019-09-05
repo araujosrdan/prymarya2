@@ -67,11 +67,11 @@
                 </td>
             </tr>
         <!-- MODAL IMAGEM INICIO -->
-        <div class="modal fade" id="image<?php echo $usu['id_usu']; ?>" tabindex="-1" role="dialog" aria-labelledby="EditarRegistro">
+        <div class="modal fade" id="image<?php echo $usu['id_usu']; ?>" tabindex="-1" role="dialog" aria-labelledby="EditarRegistro" data-backdrop="static">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <form method="POST" name="imagetUser" enctype="multipart/form-data" onsubmit="return submitLock();">
+                        <form method="POST" name="imagetUser" enctype="multipart/form-data">
                             <div class="form-group">
                                 <p>Editar imagem de usuário</p>
                                 <label for="name">Nome:</label>
@@ -80,7 +80,8 @@
                                 <input type="file" accept="image/*" name="image" class="form-control" />
                                 <input type="hidden" name="id_usu" value="<?php echo $usu['id_usu']; ?>" />
                             </div>
-                            <input type="submit" value="Atualizar imagem" name="imageUserDone" class="btn btn-primary" />
+                            <input type="submit" value="Confirmar" name="imageUserDone" class="btn btn-success" />
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                         </form>
                     </div>
                 </div>
@@ -260,15 +261,5 @@
             console.log(error);
         });
 
-    }
-
-    function confirmImageSend(id_usu){
-        $("#image" + id_usu).modal("hide");
-        Swal.fire({
-            type: "success",
-            text: "Salvo com sucesso!"
-        }).then(() => {
-            location.reload();
-        });   
     }
 </script>
