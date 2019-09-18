@@ -34,12 +34,11 @@
       $new_user_age = htmlspecialchars($_POST['new_user_age']);
       $new_user_pass = password_hash($_POST['new_user_pass'], PASSWORD_BCRYPT);
 
-      $flag = "login";
       $users = new usersDB();
-      $users->addUser($new_user_name, $new_user_email, $new_user_age, $new_user_pass, $flag);
+      $users->setNewUser($new_user_name, $new_user_email, $new_user_age, $new_user_pass);
     }
 
-    public function setNewUserPass(){
+    public function setNewPass(){
       if (filter_var($_POST['newpass_email'], FILTER_VALIDATE_EMAIL)) {
         $newpass_email = htmlspecialchars($_POST['newpass_email']);
       }
@@ -47,7 +46,7 @@
       $newpass_pass = password_hash($newpass_pass_get, PASSWORD_BCRYPT);
       
       $users = new usersDB();
-      $users->setNewUserPass($newpass_email, $newpass_pass);
+      $users->setNewPass($newpass_email, $newpass_pass);
     }
 
   }

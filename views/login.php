@@ -74,7 +74,7 @@
                                 <label for="pass">Nova senha:</label>
                                 <input type="password" name="newpass_pass" class="form-control" />
                             </div>
-                            <button type="button" class="btn btn-warning" onclick="setNewUserPass()">Alterar senha</button>
+                            <button type="button" class="btn btn-warning" onclick="setNewPass()">Alterar senha</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                         </form>
                     </div>
@@ -146,6 +146,12 @@
                                 message: response.message
                         });
                         return false;
+                    } else if(response.code == "12"){
+                        iziToast.error({
+                                title: 'Ops... ',
+                                message: response.message
+                        });
+                        return false;
                     } else {
                         iziToast.error({
                                 title: 'Ops... ',
@@ -161,10 +167,10 @@
             }
 
             function setNewUser(){
-                var new_user_name = $("#new_user_name").val();
-                var new_user_email = $("#new_user_email").val();
-                var new_user_age = $("#new_user_age").val();
-                var new_user_pass = $("#new_user_pass").val();
+                var new_user_name = $('input[name="new_user_name"]').val();
+                var new_user_email = $('input[name="new_user_email"]').val();
+                var new_user_age = $('input[name="new_user_age"]').val();
+                var new_user_pass = $('input[name="new_user_pass"]').val();
 
                 if (new_user_name == "" || typeof(new_user_name) == "undefined") {
                     $('input[name="new_user_name"]').focus();
@@ -216,13 +222,11 @@
                     var data_return = JSON.stringify(res.data);
                         response = JSON.parse(data_return);
                     
-                    if (response.code == "04") {
+                    if (response.code == "02") {
                         $("#new_user").modal("hide");
                         Swal.fire({
                             type: "success",
                             text: response.message
-                        }).then(() => {
-                            location.reload();
                         });                             
                     } else if (response.code == "03") {
                         iziToast.error({
@@ -244,7 +248,7 @@
 
             }
 
-            function setNewUserPass(){
+            function setNewPass(){
                 var newpass_email = $('input[name="newpass_email"]').val();
                 var newpass_pass_set = $('input[name="newpass_pass"]').val();
                 var newpass_pass = window.btoa(newpass_pass_set);
@@ -273,7 +277,7 @@
 
                 axios({
                     method: "POST",
-                    url: "login/setNewUserPass",
+                    url: "login/setNewPass",
                     data: items
                 }).then(res => {
                     var data_return = JSON.stringify(res.data);

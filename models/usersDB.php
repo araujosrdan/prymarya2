@@ -98,96 +98,71 @@
     }
 
     //QUERIES DE MODIFICAÇÃO
-    public function addUser($new_user_name, $new_user_email, $new_user_age, $new_user_pass, $flag){
-      if(isset($_SESSION['prymarya2_session_log'])){
-        $query = "SELECT * FROM users WHERE email = :new_user_email";
-        //echo $query;exit;
-        $query = $this->db->prepare($query);
-        $query->bindValue(":new_user_email", $new_user_email);
-        $query->execute();
-        if ($query->rowCount() > 0) {
-          $response = array(
-            "code" => "01",
-            "message" => "Email já existe no sistema!"
-          );
-          echo json_encode($response);
-          exit;
-        } else {
-          $query = "INSERT INTO users SET name = :new_user_name, email = :new_user_email, pass = :new_user_pass, age = :new_user_age";
-          //echo $query;exit;
-          $query = $this->db->prepare($query);
-          $query->bindValue(":new_user_name", $new_user_name);
-          $query->bindValue(":new_user_email", $new_user_email);
-          $query->bindValue(":new_user_pass", $new_user_pass);
-          $query->bindValue(":new_user_age", $new_user_age);
-          $query->execute();
-          $response = array(
-            "code" => "02",
-            "message" => "Registro gravado com sucesso!"
-          );
-          echo json_encode($response);
-          exit();
-        }
-      } else {
-        $query = "SELECT * FROM users WHERE email = :new_user_email";
-        //echo $query;exit;
-        $query = $this->db->prepare($query);
-        $query->bindValue(":new_user_email", $new_user_email);
-        $query->execute();
-        if ($query->rowCount() > 0) {
-          $response = array(
-            "code" => "03",
-            "message" => "Usuário já existe no sistema!"
-          );
-          echo json_encode($response);
-          exit();
-        } else {
-          $query = "INSERT INTO users SET name = :new_user_name, email = :new_user_email, pass = :new_user_pass, age = :new_user_age";
-          //echo $query;exit;
-          $query = $this->db->prepare($query);
-          $query->bindValue(":new_user_name", $new_user_name);
-          $query->bindValue(":new_user_email", $new_user_email);
-          $query->bindValue(":new_user_pass", $new_user_pass);
-          $query->bindValue(":new_user_age", $new_user_age);
-          $query->execute();
-          $response = array(
-            "code" => "04",
-            "message" => "Usuário gravado com sucesso!"
-          );
-          echo json_encode($response);
-          exit();
-        }
-      }
-    }
-
-    public function editUser($active, $name, $username, $age, $id, $flag){
-      $query = "SELECT * FROM users WHERE email = :email AND id_usu != :id";
+    public function setNewUser($new_user_name, $new_user_email, $new_user_age, $new_user_pass){
+      $query = "SELECT * FROM users WHERE email = :new_user_email";
       //echo $query;exit;
       $query = $this->db->prepare($query);
-      $query->bindValue(":email", $username);
-      $query->bindValue(":id", $id);
+      $query->bindValue(":new_user_email", $new_user_email);
       $query->execute();
       if ($query->rowCount() > 0) {
-        echo "<script>alert('Ops! Este usuário já existe!')</script>";
+        $response = array(
+          "code" => "01",
+          "message" => "Email já existe no sistema!"
+        );
+        echo json_encode($response);
+        exit;
       } else {
-        $query = "UPDATE users SET active= :active, name = :name, email = :email, age = :age WHERE id_usu = :id";
+        $query = "INSERT INTO users SET name = :new_user_name, email = :new_user_email, pass = :new_user_pass, age = :new_user_age";
         //echo $query;exit;
         $query = $this->db->prepare($query);
-        $query->bindValue(":active", $active);
-        $query->bindValue(":name", $name);
-        $query->bindValue(":email", $username);
-        $query->bindValue(":age", $age);
-        $query->bindValue(":id", $id);
+        $query->bindValue(":new_user_name", $new_user_name);
+        $query->bindValue(":new_user_email", $new_user_email);
+        $query->bindValue(":new_user_pass", $new_user_pass);
+        $query->bindValue(":new_user_age", $new_user_age);
         $query->execute();
-        if ($flag === "modal") {
-          header("Refresh:0");
-        } else {
-          return "Registro editado com sucesso!";
-        }
+        $response = array(
+          "code" => "02",
+          "message" => "Registro gravado com sucesso!"
+        );
+        echo json_encode($response);
+        exit();
       }
     }
 
-    public function imageUser($image, $id_usu, $flag){
+    public function setEditUser($user_active, $user_name, $user_email, $user_age, $id_usu){
+      $query = "SELECT * FROM users WHERE email = :user_email AND id_usu != :id_usu";
+      //echo $query;exit;
+      $query = $this->db->prepare($query);
+      $query->bindValue(":user_email", $user_email);
+      $query->bindValue(":id_usu", $id_usu);
+      $query->execute();
+      if ($query->rowCount() > 0) {
+        $response = array(
+          "code" => "13",
+          "message" => "Outro usuário com este email!"
+        );
+        echo json_encode($response);
+        exit();
+      } else {
+        $query = "UPDATE users SET active= :user_active, name = :user_name, email = :user_email, age = :user_age WHERE id_usu = :id_usu";
+        //echo $query;exit;
+        $query = $this->db->prepare($query);
+        $query->bindValue(":user_active", $user_active);
+        $query->bindValue(":user_name", $user_name);
+        $query->bindValue(":user_email", $user_email);
+        $query->bindValue(":user_age", $user_age);
+        $query->bindValue(":id_usu", $id_usu);
+        $query->execute();
+        $response = array(
+          "code" => "14",
+          "message" => "Usuário atualizado com sucesso!"
+        );
+        echo json_encode($response);
+        exit();
+      }
+    }
+
+    public function setUserImg($image, $id_usu){
       if (count($image) > 0) {
         $user_folder = 'media/user/' . $id_usu;
         if (is_dir($user_folder)) {
@@ -203,7 +178,7 @@
         $oldpic = $query->fetch();
         if (!empty($oldpic)) {
           chmod($user_folder, 0777);
-          array_map("unlink", glob($user_folder . "/" . $oldpic['image']));
+          @array_map("unlink", glob($user_folder . "/" . $oldpic['image']));
         }
         $type = $image['type'];
         if (in_array($type, array('image/jpeg', 'image/png'))) {
@@ -229,22 +204,24 @@
           $query->bindValue(":image", $tmpname);
           $query->bindValue(":id", $id_usu);
           $query->execute();
-          if ($flag === "modal") {
-            header("Refresh:0");
-          } else {
-            return "Imagem editada com sucesso!";
-          }
+          $response = array(
+            "code" => "17",
+            "message" => "Imagem do registro atualizada com sucesso!"
+          );
+          echo json_encode($response);
+          exit();
         } else {
-            if ($flag === "modal") {
-              echo "<script>alert('Por favor envie apenas imagens JPG ou JPEG!')</script>";
-            } else {
-              return "Por favor envie apenas imagens JPG ou JPEG!";
-            }
+          $response = array(
+            "code" => "17",
+            "message" => "Envie apenas imagens JPG ou JPEG!"
+          );
+          echo json_encode($response);
+          exit();
           }
       }
     }
 
-    public function setNewUserPass($newpass_email, $newpass_pass){
+    public function setNewPass($newpass_email, $newpass_pass){
       if (isset($_SESSION['prymarya2_session_log'])) {
         $id_usu = $_SESSION['prymarya2_session_log'];
         $query = "UPDATE users SET pass = :newpass_pass WHERE id_usu = :id_usu";
@@ -255,7 +232,7 @@
         $query->execute();
         $response = array(
           "code" => "05",
-          "message" => "Senha gravada com sucesso!"
+          "message" => "#05 - Senha gravada com sucesso!"
         );
         echo json_encode($response);
         exit();
@@ -274,7 +251,7 @@
           $query->execute();
           $response = array(
             "code" => "06",
-            "message" => "Senha gravada com sucesso!"
+            "message" => "#06 - Senha gravada com sucesso!"
           );
           echo json_encode($response);
           exit();
@@ -289,18 +266,28 @@
       }
     }
 
-    public function delUser($id){
-      if ($_SESSION['prymarya2_session_log'] === $id) {
-        $query = "DELETE FROM users WHERE id_usu = '$id'";
+    public function setDelUser($id_usu){
+      if ($_SESSION['prymarya2_session_log'] === $id_usu) {
+        $query = "DELETE FROM users WHERE id_usu = '$id_usu'";
         //echo $query;exit;
         $query = $this->db->query($query);
         unset($_SESSION['prymarya2_session_log']);
-        header("Location: " . BASEURL);
+        $response = array(
+          "code" => "15",
+          "message" => "Registro deletado com sucesso. Adeus!"
+        );
+        echo json_encode($response);
+        exit();
       } else {
-        $query = "DELETE FROM users WHERE id_usu = '$id'";
+        $query = "DELETE FROM users WHERE id_usu = '$id_usu'";
         //echo $query;exit;
         $query = $this->db->query($query);
-        header("Location: " . BASEURL);
+        $response = array(
+          "code" => "16",
+          "message" => "Registro deletado com sucesso!"
+        );
+        echo json_encode($response);
+        exit();
       }
     }
 
