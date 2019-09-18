@@ -33,55 +33,62 @@
       return $returner;
     }
 
-    public function users_login($username, $pass){
-      $query = "SELECT * FROM users WHERE email = :email";
-      //echo $query;exit;
+    public function logIn($login_email, $login_pass){
+      $query = "SELECT * FROM users WHERE email = :login_email";
       $query = $this->db->prepare($query);
-      $query->bindValue(":email", $username);
+      $query->bindValue(":login_email", $login_email);
       $query->execute();
       if ($query->rowCount() > 0) {
-        if (isset($_SESSION['crud_sessionlogin_log']) && $_SESSION['crud_sessionlogin_log'] >= 3) {
-          $query = "SELECT * FROM users WHERE email = :email";
-          //echo $query;exit;
+        $returner = $query->fetch();
+        if ($returner['blocked'] == "N") {
+          $query = "SELECT * FROM users WHERE email = :login_email AND active = 'Y'";
           $query = $this->db->prepare($query);
-          $query->bindValue(":email", $username);
+          $query->bindValue(":login_email", $login_email);
           $query->execute();
           if ($query->rowCount() > 0) {
-              $query = "UPDATE users SET blocked = 'Y' WHERE email = :email";
-              //echo $query;exit;
-              $query = $this->db->prepare($query);
-              $query->bindValue(":email", $username);
-              $query->execute();
+            $query = $query->fetch();
+            if (password_verify($login_pass, $query['pass'])) {
+              $_SESSION['prymarya2_session_log'] = $query['id_usu'];
+              $response = array(
+                "code" => "08",
+                "message" => "[Acesso permitido]"
+              );
+              echo json_encode($response);
+              exit;
+            } else {
+              unset($_SESSION['prymarya2_session_log']);
+              $response = array(
+                "code" => "09",
+                "message" => "Senha informada incorreta!"
+              );
+              echo json_encode($response);
+              exit;
+            }
+          } else {
+            unset($_SESSION['prymarya2_session_log']);
+            $response = array(
+              "code" => "10",
+              "message" => "Conta inativa!"
+            );
+            echo json_encode($response);
+            exit;
           }
-          return "Acesso bloqueado por muitas tentativas! Lamentamos o inconveniente.";
         } else {
-          $query = "SELECT * FROM users WHERE email = :email";
-          //echo $query;exit;
-          $query = $this->db->prepare($query);
-          $query->bindValue(":email", $username);
-          $query->execute();
-          if ($query->rowCount() > 0) {
-              $query = $query->fetch();
-              if(password_verify($pass, $query['pass'])){
-                if ($query['blocked'] == 'N') {
-                  unset($_SESSION['crud_sessionlogin_log']);
-                  $_SESSION['prymarya2_session_log'] = $query['id_usu'];
-                  header("Location: " . BASEURL . "home");
-                  exit;
-                } else {
-                  return "Conta bloqueada! Email contato@danerz.com para abrir chamado";
-                }
-              } else {
-                if (!isset($_SESSION['crud_sessionlogin_log'])) {
-                  $_SESSION['crud_sessionlogin_log'] = 0;
-                }
-                $_SESSION['crud_sessionlogin_log']++;
-                return "Email e/ou Senha errados! Tentativas: " . $_SESSION['crud_sessionlogin_log'] . ". No terceiro erro haverá bloqueio!";
-              }
-          }
+            $response = array(
+              "code" => "11",
+              "message" => "Conta bloqueada!"
+            );
+            echo json_encode($response);
+            exit;
         }
       } else {
-        return "Usuário não existe! Tente novamente";
+        unset($_SESSION['prymarya2_session_log']);
+        $response = array(
+          "code" => "12",
+          "message" => "Email não cadastrado no sistema!"
+        );
+        echo json_encode($response);
+        exit;
       }
     }
 
@@ -128,7 +135,12 @@
         $query->bindValue(":new_user_email", $new_user_email);
         $query->execute();
         if ($query->rowCount() > 0) {
-          echo "<script>alert('Ops! Este usuário já existe!')</script>";
+          $response = array(
+            "code" => "03",
+            "message" => "Usuário já existe no sistema!"
+          );
+          echo json_encode($response);
+          exit();
         } else {
           $query = "INSERT INTO users SET name = :new_user_name, email = :new_user_email, pass = :new_user_pass, age = :new_user_age";
           //echo $query;exit;
@@ -138,7 +150,12 @@
           $query->bindValue(":new_user_pass", $new_user_pass);
           $query->bindValue(":new_user_age", $new_user_age);
           $query->execute();
-          header("Location: " . BASEURL . "login");
+          $response = array(
+            "code" => "04",
+            "message" => "Usuário gravado com sucesso!"
+          );
+          echo json_encode($response);
+          exit();
         }
       }
     }
@@ -227,35 +244,47 @@
       }
     }
 
-    public function passEdit($pass, $id, $flag){
+    public function setNewUserPass($newpass_email, $newpass_pass){
       if (isset($_SESSION['prymarya2_session_log'])) {
-        $query = "UPDATE users SET pass = :pass WHERE id_usu = :id";
+        $id_usu = $_SESSION['prymarya2_session_log'];
+        $query = "UPDATE users SET pass = :newpass_pass WHERE id_usu = :id_usu";
         //echo $query;exit;
         $query = $this->db->prepare($query);
-        $query->bindValue(":pass", $pass);
-        $query->bindValue(":id", $id);
+        $query->bindValue(":newpass_pass", $newpass_pass);
+        $query->bindValue(":id_usu", $id_usu);
         $query->execute();
-        if ($flag === "modal") {
-          header("Refresh:0");
-        } else {
-          return "Senha editada com sucesso!";
-        }
+        $response = array(
+          "code" => "05",
+          "message" => "Senha gravada com sucesso!"
+        );
+        echo json_encode($response);
+        exit();
       } else {
-        $query = "SELECT * FROM users WHERE email = :email";
+        $query = "SELECT * FROM users WHERE email = :newpass_email";
         //echo $query;exit;
         $query = $this->db->prepare($query);
-        $query->bindValue(":email", $id);
+        $query->bindValue(":newpass_email", $newpass_email);
         $query->execute();
         if ($query->rowCount() > 0) {
-          $query = "UPDATE users SET pass = :pass WHERE email = :email";
+          $query = "UPDATE users SET pass = :newpass_pass WHERE email = :newpass_email";
           //echo $query;exit;
           $query = $this->db->prepare($query);
-          $query->bindValue(":pass", $pass);
-          $query->bindValue(":email", $id);
+          $query->bindValue(":newpass_pass", $newpass_pass);
+          $query->bindValue(":newpass_email", $newpass_email);
           $query->execute();
-          return "Senha editada com sucesso!";
+          $response = array(
+            "code" => "06",
+            "message" => "Senha gravada com sucesso!"
+          );
+          echo json_encode($response);
+          exit();
         } else {
-          return "Este email não está cadastrado no sistema!";
+          $response = array(
+            "code" => "07",
+            "message" => "Email não cadastrado no sistema!"
+          );
+          echo json_encode($response);
+          exit();
         }
       }
     }

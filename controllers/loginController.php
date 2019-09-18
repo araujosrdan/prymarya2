@@ -13,39 +13,41 @@
 
     public function index(){
       $data_set = array('return' => '');
-
-      if (isset($_POST['login_form'])) {
-        if (filter_var($_POST['username'], FILTER_VALIDATE_EMAIL)) {
-          $username = addslashes($_POST['username']);
-        }
-        $pass = addslashes($_POST['pass']);
-        $users = new usersDB();
-        $data_set['return'] = $users->users_login($username, $pass);
-      }
-
-      if(isset($_POST['newUserDone'])){
-        if (filter_var($_POST['username'], FILTER_VALIDATE_EMAIL)) {
-          $username = addslashes($_POST['username']);
-        }
-          $name = addslashes(htmlspecialchars($_POST['name']));
-          $pass = addslashes(password_hash($_POST['pass'], PASSWORD_BCRYPT));
-          $age = addslashes(htmlspecialchars($_POST['age']));
-          $flag = "outside";
-          $users = new usersDB();
-          $users->addUser($name, $username, $pass, $age, $flag);
-      }
-
-      if (isset($_POST['newPass'])) {
-        if (filter_var($_POST['username'], FILTER_VALIDATE_EMAIL)) {
-          $id = addslashes($_POST['username']);
-        }
-        $pass = addslashes(password_hash($_POST['pass'], PASSWORD_BCRYPT));
-        $flag = "outside";
-        $users = new usersDB();
-        $data_set['return'] = $users->passEdit($pass, $id, $flag);
-      }
-
       $this->loadPage('login', $data_set);
+    }
+
+    public function logIn(){
+      if (filter_var($_POST['login_email'], FILTER_VALIDATE_EMAIL)) {
+        $login_email = htmlspecialchars($_POST['login_email']);
+      }
+      $login_pass = urldecode(base64_decode($_POST['login_pass']));
+      
+      $users = new usersDB();
+      $users->logIn($login_email, $login_pass);
+    }
+
+    public function setNewUser(){
+      $new_user_name = htmlspecialchars($_POST['new_user_name']);
+      if (filter_var($_POST['new_user_email'], FILTER_VALIDATE_EMAIL)) {
+        $new_user_email = htmlspecialchars($_POST['new_user_email']);
+      }
+      $new_user_age = htmlspecialchars($_POST['new_user_age']);
+      $new_user_pass = password_hash($_POST['new_user_pass'], PASSWORD_BCRYPT);
+
+      $flag = "login";
+      $users = new usersDB();
+      $users->addUser($new_user_name, $new_user_email, $new_user_age, $new_user_pass, $flag);
+    }
+
+    public function setNewUserPass(){
+      if (filter_var($_POST['newpass_email'], FILTER_VALIDATE_EMAIL)) {
+        $newpass_email = htmlspecialchars($_POST['newpass_email']);
+      }
+      $newpass_pass_get = urldecode(base64_decode($_POST['newpass_pass'])); 
+      $newpass_pass = password_hash($newpass_pass_get, PASSWORD_BCRYPT);
+      
+      $users = new usersDB();
+      $users->setNewUserPass($newpass_email, $newpass_pass);
     }
 
   }

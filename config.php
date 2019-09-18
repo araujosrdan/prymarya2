@@ -6,7 +6,7 @@
   if (ENVIROMENT == 'development') {
     ini_set("display_errors", "On");
     define("BASEURL", "http://localhost/prymarya2/");
-    $config['dbname'] = 'Prymarya2db';
+    $config['dbname'] = 'prymarya2db';
     $config['host']   = 'localhost';
     $config['dbuser'] = 'root';
     $config['dbpass'] = 'root';
