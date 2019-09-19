@@ -100,7 +100,7 @@
     //QUERIES DE MODIFICAÇÃO
     public function setNewUser($new_user_name, $new_user_email, $new_user_age, $new_user_pass){
       $query = "SELECT * FROM users WHERE email = :new_user_email";
-      //echo $query;exit;
+      // echo $query;exit;
       $query = $this->db->prepare($query);
       $query->bindValue(":new_user_email", $new_user_email);
       $query->execute();
@@ -129,7 +129,7 @@
       }
     }
 
-    public function setEditUser($user_active, $user_name, $user_email, $user_age, $id_usu){
+    public function setEditUser($user_active, $user_name, $user_email, $user_age, $user_pass, $id_usu){
       $query = "SELECT * FROM users WHERE email = :user_email AND id_usu != :id_usu";
       //echo $query;exit;
       $query = $this->db->prepare($query);
@@ -144,13 +144,20 @@
         echo json_encode($response);
         exit();
       } else {
-        $query = "UPDATE users SET active= :user_active, name = :user_name, email = :user_email, age = :user_age WHERE id_usu = :id_usu";
-        //echo $query;exit;
+        if ($user_pass !== '') {
+          $query = "UPDATE users SET active= :user_active, name = :user_name, email = :user_email, age = :user_age, pass = :user_pass WHERE id_usu = :id_usu";
+        } else {
+          $query = "UPDATE users SET active= :user_active, name = :user_name, email = :user_email, age = :user_age WHERE id_usu = :id_usu";
+        }
+        // echo $query;exit;
         $query = $this->db->prepare($query);
         $query->bindValue(":user_active", $user_active);
         $query->bindValue(":user_name", $user_name);
         $query->bindValue(":user_email", $user_email);
         $query->bindValue(":user_age", $user_age);
+        if ($user_pass !== '') {
+          $query->bindValue(":user_pass", $user_pass);
+        }
         $query->bindValue(":id_usu", $id_usu);
         $query->execute();
         $response = array(
@@ -222,22 +229,7 @@
     }
 
     public function setNewPass($newpass_email, $newpass_pass){
-      if (isset($_SESSION['prymarya2_session_log'])) {
-        $id_usu = $_SESSION['prymarya2_session_log'];
-        $query = "UPDATE users SET pass = :newpass_pass WHERE id_usu = :id_usu";
-        //echo $query;exit;
-        $query = $this->db->prepare($query);
-        $query->bindValue(":newpass_pass", $newpass_pass);
-        $query->bindValue(":id_usu", $id_usu);
-        $query->execute();
-        $response = array(
-          "code" => "05",
-          "message" => "#05 - Senha gravada com sucesso!"
-        );
-        echo json_encode($response);
-        exit();
-      } else {
-        $query = "SELECT * FROM users WHERE email = :newpass_email";
+      $query = "SELECT * FROM users WHERE email = :newpass_email";
         //echo $query;exit;
         $query = $this->db->prepare($query);
         $query->bindValue(":newpass_email", $newpass_email);
@@ -258,12 +250,11 @@
         } else {
           $response = array(
             "code" => "07",
-            "message" => "Email não cadastrado no sistema!"
+            "message" => "#07 - Email não cadastrado no sistema!"
           );
           echo json_encode($response);
           exit();
         }
-      }
     }
 
     public function setDelUser($id_usu){

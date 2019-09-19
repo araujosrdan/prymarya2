@@ -1,7 +1,7 @@
 <?php if(count($my_images) > 0): ?>
     <div class="row">
         <h3>Imagens no sistema:</h3>
-        <div class="col-sm-4">
+        <div class="col col-lg-4">
             <form method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="images">Escolha sua(s) imagem(ns):</label>
@@ -10,7 +10,7 @@
                 <input type="submit" value="Enviar" id="img_new" name="img_new" class="btn btn-primary" />
             </form>
         </div>
-        <div class="col-sm-8">
+        <div class="col col-lg-10">
             <div class="panel panel-default">
                 <div class="panel-heading">Imagens atuais</div>
                 <div class="panel-body">
@@ -19,7 +19,7 @@
                             <?php if($var['name'] != ""): ?>
                               <h4 class=""><?php echo $var['name']; ?></h4>
                             <?php else: ?>
-                              <h4>Título da imagem</h4>
+                              <h4>Título</h4>
                             <?php endif; ?>
                             <div class="">
                               <a href="#" data-toggle="modal" data-target="#image_edit<?php echo $var['id_img']; ?>" class="btn btn-dark" title="Editar imagem"><img src="<?php echo BASEURL; ?>media/images/<?php echo $var['fid_usu']; ?>/<?php echo $var['addr']; ?>" class="img-thumbnail" /></a>
@@ -81,11 +81,6 @@
             <?php endforeach; ?>
         </div>
     </div>
-    <?php if(!empty($return)): ?>
-        <div class="alert alert-danger return_message" id="return_message">
-            <?php echo $return . " "; ?>
-        </div>
-    <?php endif; ?>
 <?php else: ?>
     <div class="">
     <h3>Imagens no sistema:</h3>
@@ -100,9 +95,4 @@
             </form>
         </div>
     </div>
-    <?php if(!empty($return)): ?>
-        <div class="alert alert-danger return_message" id="return_message">
-            <?php echo $return . " "; ?>
-        </div>
-    <?php endif; ?>
 <?php endif; ?>

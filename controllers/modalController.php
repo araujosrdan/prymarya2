@@ -45,23 +45,18 @@
       if (filter_var($_POST['user_email'], FILTER_VALIDATE_EMAIL)) {
         $user_email = addslashes($_POST['user_email']);
       }
+      if (isset($_POST['user_pass']) && !empty($_POST['user_pass'])) {
+        $user_pass_get = urldecode(base64_decode($_POST['user_pass'])); 
+        $user_pass = password_hash($user_pass_get, PASSWORD_BCRYPT);
+      } else {
+        $user_pass = '';
+      }
       $user_active = $_POST['user_active'];
       $user_name = addslashes(htmlspecialchars($_POST['user_name']));
       $user_age = addslashes(htmlspecialchars($_POST['user_age']));
       $id_usu = $_POST['id_usu'];
       $users = new usersDB();
-      $users->setEditUser($user_active, $user_name, $user_email, $user_age, $id_usu);
-    }
-
-    public function setNewPass(){
-      if (filter_var($_POST['newpass_email'], FILTER_VALIDATE_EMAIL)) {
-        $newpass_email = htmlspecialchars($_POST['newpass_email']);
-      }
-      $newpass_pass_get = urldecode(base64_decode($_POST['newpass_pass'])); 
-      $newpass_pass = password_hash($newpass_pass_get, PASSWORD_BCRYPT);
-      
-      $users = new usersDB();
-      $users->setNewPass($newpass_email, $newpass_pass);
+      $users->setEditUser($user_active, $user_name, $user_email, $user_age, $user_pass, $id_usu);
     }
 
     public function setUserImg(){

@@ -1,5 +1,10 @@
 <h2><a href="<?php echo BASEURL; ?>" class="" title="">Home</a> > CRUD via PARÂMETRO</h2>
 <hr />
+<a href="<?php echo BASEURL; ?>parameter/new" class="btn btn-primary" title="Novo registro">
+    <i class="fas fa-plus"></i>
+    Novo resgistro
+</a>
+<hr />
 <table class="table table-striped table-bordered" style="width: 100%;" id="tbUsuarios">
     <thead>
         <tr>
@@ -32,20 +37,15 @@
                 <td style="text-align:right">
                     <a href="<?php echo BASEURL; ?>parameter/image/?id=<?php echo $usu['id_usu']; ?>" class="btn btn-info" title="Editar imagem"><i class="fas fa-user"></i></a>
                     <a href="<?php echo BASEURL; ?>parameter/edit/?id=<?php echo $usu['id_usu']; ?>" class="btn btn-secondary" title="Editar registro"><i class="fas fa-edit"></i></a>
-                    <a href="<?php echo BASEURL; ?>parameter/pass/?id=<?php echo $usu['id_usu']; ?>" class="btn btn-warning" title="Editar senha"><i class="fas fa-key"></i></a>
-                    <a href="<?php echo BASEURL; ?>parameter/delete/?id=<?php echo $usu['id_usu']; ?>" class="btn btn-danger" title="Excluir registro"><i class="fas fa-trash"></i></a>
+                    <button type="button" class="btn btn-danger" onclick="setDelUser(<?php echo $usu['id_usu']; ?>)"><i class="fas fa-trash"></i></button>
                 </td>
             </tr>
         <?php endforeach; ?>
     </tbody>
 </table>
 <hr />
-<a href="<?php echo BASEURL; ?>parameter/new" class="btn btn-primary" title="Novo registro">
-    <i class="fas fa-plus"></i>
-    Novo resgistro
-</a>
 
-<script>
+<script type="text/javascript">
     $(document).ready(function() {
         $('#tbUsuarios').DataTable({
             "language": {
@@ -57,4 +57,62 @@
             }
         });
     });
+
+    function setDelUser(id_usu){
+        iziToast.question({
+            timeout: 20000,
+            close: false,
+            overlay: true,
+            displayMode: 'once',
+            id: 'question',
+            zindex: 999,
+            title: "Deletar",
+            message: 'Quer mesmo deletar este registro? Este processo não tem volta!',
+            position: 'center',
+            buttons: [
+                ['<button>Sim, por favor!</button>', function (instance, toast) {
+
+                    instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+                    let items = new URLSearchParams();
+                    items.append("id_usu", id_usu);
+
+                    axios({
+                        method: "POST",
+                        url: "modal/setDelUser",
+                        data: items
+                    }).then(res => {
+                        var data_return = JSON.stringify(res.data);
+                            response = JSON.parse(data_return);
+
+                        if (response.code == "16") {
+                            Swal.fire({
+                                type: "success",
+                                text: response.message
+                            }).then(() => {
+                                location.reload();
+                            });    
+                        }
+
+                        if (response.code == "15") {
+                            window.location.href = "welcome";   
+                        }
+
+                    }).catch(function(error){
+                        console.log(error);
+                    });
+
+                }, true],
+                ['<button><b>Não! Mudei de ideia.</b></button>', function (instance, toast) {
+
+                    instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+                    iziToast.info({
+                        title: 'Ok! ',
+                        message: "Registro mantido!"
+                    });
+                    return false;
+
+                }],
+            ]
+        });
+    }
 </script>
