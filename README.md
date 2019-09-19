@@ -12,7 +12,7 @@ Versão para servidores de hospedagem compartilhada!
 
 # Versão:  
 
--Versão 1.0.0
+-Versão 1.0.35
 
 # Frameworks usados:
 -Para o visual foi usado o "Bootstrap 4": https://getbootstrap.com/  
