@@ -3,9 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE-edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset = UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="imagetoolbar" content="no" />
     <title>Prymarya 2 framework</title>
+    <meta name="author" content="Daniel Araujo" />
+    <meta name="description" content="Prymarya 2 framework.">
+    <meta name="keywords" content="Gestão, escolar, web, HTML, CSS, Javascript" />
+    <meta name="revised" content="Dancode, 19/09/2019" />
+    <meta http-equiv="refresh" content="5" />
     <link rel="shortcut icon" type="image/x-icon" href="<?php echo BASEURL; ?>assets/img/icon.png">
     <link href="<?php echo BASEURL; ?>assets/lib/dataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="<?php echo BASEURL; ?>assets/lib/bootstrap-4.3.1/css/bootstrap.min.css" rel="stylesheet" />
