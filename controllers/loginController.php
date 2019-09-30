@@ -17,36 +17,30 @@
     }
 
     public function logIn(){
-      if (filter_var($_POST['login_email'], FILTER_VALIDATE_EMAIL)) {
-        $login_email = htmlspecialchars($_POST['login_email']);
-      }
-      $login_pass = urldecode(base64_decode($_POST['login_pass']));
+      $login = htmlspecialchars($_POST['login']);
+      $pass = urldecode(base64_decode($_POST['pass']));
       
       $users = new usersDB();
-      $users->logIn($login_email, $login_pass);
+      $users->logIn($login, $pass);
     }
 
     public function setNewUser(){
-      $new_user_name = htmlspecialchars($_POST['new_user_name']);
-      if (filter_var($_POST['new_user_email'], FILTER_VALIDATE_EMAIL)) {
-        $new_user_email = htmlspecialchars($_POST['new_user_email']);
-      }
-      $new_user_age = htmlspecialchars($_POST['new_user_age']);
-      $new_user_pass = password_hash($_POST['new_user_pass'], PASSWORD_BCRYPT);
+      $name_nu = htmlspecialchars($_POST['name_nu']);
+      $login_nu = htmlspecialchars($_POST['login_nu']);
+      $birthday_nu = htmlspecialchars($_POST['birthday_nu']);
+      $pass_nu = password_hash($_POST['pass_nu'], PASSWORD_BCRYPT);
 
       $users = new usersDB();
-      $users->setNewUser($new_user_name, $new_user_email, $new_user_age, $new_user_pass);
+      $users->setNewUser($name_nu, $login_nu, $birthday_nu, $pass_nu);
     }
 
     public function setNewPass(){
-      if (filter_var($_POST['newpass_email'], FILTER_VALIDATE_EMAIL)) {
-        $newpass_email = htmlspecialchars($_POST['newpass_email']);
-      }
-      $newpass_pass_get = urldecode(base64_decode($_POST['newpass_pass'])); 
-      $newpass_pass = password_hash($newpass_pass_get, PASSWORD_BCRYPT);
+      $login_np = htmlspecialchars($_POST['login_np']);
+      $pass_get = urldecode(base64_decode($_POST['pass_np'])); 
+      $pass_np = password_hash($pass_get, PASSWORD_BCRYPT);
       
       $users = new usersDB();
-      $users->setNewPass($newpass_email, $newpass_pass);
+      $users->setNewPass($login_np, $pass_np);
     }
 
   }

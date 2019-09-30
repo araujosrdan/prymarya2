@@ -18,12 +18,12 @@
                 <p>Company login:</p>
                 <form method="post">
                     <div class="form-group">
-                        <label for="email">Email:</label>
-                        <input type="email" name="login_email" class="form-control" />
+                        <label for="email">Login / Email:</label>
+                        <input type="text" name="login" class="form-control" />
                     </div>
                     <div class="form-group">
                         <label for="pass">Senha:</label>
-                        <input type="password" name="login_pass" class="form-control" />
+                        <input type="password" name="pass" class="form-control" />
                     </div>
                     <button type="button" class="btn btn-success" onclick="logIn()">Entrar</button>
                     <a href="<?php echo BASEURL; ?>" class="btn btn-secondary">Voltar</a>
@@ -32,8 +32,8 @@
                 <a href="#" data-toggle="modal" data-target="#new_user" class="btn btn-white" title="Novo usuário?">Novo usuário?</a>
             </div>
             <div class="login_links">
-                <a href="https://github.com/danerscode" target="_blank" title="Github"><i class="fab fa-github"></i> Github</a>
-                <a href="https://danerscode.com" target="_blank" title="Site oficial"><i class="fas fa-globe"></i> Site oficial</a>
+                <a href="https://github.com/dancodeweb/prymarya2" target="_blank" title="Github"><i class="fab fa-github"></i> Github</a>
+                <a href="https://dancode.com.br" target="_blank" title="Site oficial"><i class="fas fa-globe"></i> Site oficial</a>
             </div>
         </div>
         <!-- MODAL NOVO USUARIO INICIO -->
@@ -45,13 +45,13 @@
                             <div class="form-group">
                                 <p>Novo registro de usuário</p>
                                 <label for="name">Nome:</label>
-                                <input type="text" name="new_user_name" class="form-control" />
-                                <label for="username">Email:</label>
-                                <input type="email" name="new_user_email" class="form-control" />
-                                <label for="age">Idade:</label>
-                                <input type="text" name="new_user_age" class="form-control" />
+                                <input type="text" name="name_nu" class="form-control" />
+                                <label for="username">Login / Email:</label>
+                                <input type="text" name="login_nu" class="form-control" />
+                                <label for="birthday">Idade:</label>
+                                <input type="date" name="birthday_nu" class="form-control" />
                                 <label for="pass">Senha:</label>
-                                <input type="password" name="new_user_pass" class="form-control" />
+                                <input type="password" name="pass_nu" class="form-control" />
                             </div>
                             <button type="button" class="btn btn-success" onclick="setNewUser()">Confirmar</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
@@ -69,10 +69,10 @@
                         <form method="POST" name="new_password">
                             <div class="form-group">
                                 <p>Esqueceu sua senha?</p>
-                                <label for="username">Email:</label>
-                                <input type="email" name="newpass_email" class="form-control" />
+                                <label for="username">Login / Email:</label>
+                                <input type="email" name="login_np" class="form-control" />
                                 <label for="pass">Nova senha:</label>
-                                <input type="password" name="newpass_pass" class="form-control" />
+                                <input type="password" name="pass_np" class="form-control" />
                             </div>
                             <button type="button" class="btn btn-warning" onclick="setNewPass()">Alterar senha</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
@@ -91,12 +91,12 @@
         <script type="text/javascript" src="<?php echo BASEURL; ?>assets/js/script.js"></script>
         <script type="text/javascript">
             function logIn(){
-                var login_email = $('input[name="login_email"]').val();
-                var login_pass_set = $('input[name="login_pass"]').val();
-                var login_pass = window.btoa(login_pass_set);
+                var login = $('input[name="login"]').val();
+                var pass_set = $('input[name="pass"]').val();
+                var pass = window.btoa(pass_set);
                 
-                if (login_email == "" || typeof(login_email) == "undefined") {
-                    $('input[name="login_email"]').focus();
+                if (login == "" || typeof(login) == "undefined") {
+                    $('input[name="login"]').focus();
                     iziToast.error({
                         title: 'Ops',
                         message: "Campo obrigatório!"
@@ -104,8 +104,8 @@
                     return false;
                 }
 
-                if (login_pass_set == "" || typeof(login_pass_set) == "undefined") {
-                    $('input[name="login_pass"]').focus();
+                if (pass_set == "" || typeof(pass_set) == "undefined") {
+                    $('input[name="pass"]').focus();
                     iziToast.error({
                         title: 'Ops',
                         message: "Campo obrigatório!"
@@ -114,8 +114,8 @@
                 }
 
                 let items = new URLSearchParams();
-                items.append("login_email", login_email);
-                items.append("login_pass", login_pass);
+                items.append("login", login);
+                items.append("pass", pass);
 
                 axios({
                     method: "POST",
@@ -167,13 +167,13 @@
             }
 
             function setNewUser(){
-                var new_user_name = $('input[name="new_user_name"]').val();
-                var new_user_email = $('input[name="new_user_email"]').val();
-                var new_user_age = $('input[name="new_user_age"]').val();
-                var new_user_pass = $('input[name="new_user_pass"]').val();
+                var name_nu = $('input[name="name_nu"]').val();
+                var login_nu = $('input[name="login_nu"]').val();
+                var birthday_nu = $('input[name="birthday_nu"]').val();
+                var pass_nu = $('input[name="pass_nu"]').val();
 
-                if (new_user_name == "" || typeof(new_user_name) == "undefined") {
-                    $('input[name="new_user_name"]').focus();
+                if (name_nu == "" || typeof(name_nu) == "undefined") {
+                    $('input[name="name_nu"]').focus();
                     iziToast.error({
                         title: 'Ops',
                         message: "Campo obrigatório!"
@@ -181,8 +181,8 @@
                     return false;
                 }
 
-                if (new_user_email == "" || typeof(new_user_email) == "undefined") {
-                    $('input[name="new_user_email"]').focus();
+                if (login_nu == "" || typeof(login_nu) == "undefined") {
+                    $('input[name="login_nu"]').focus();
                     iziToast.error({
                         title: 'Ops',
                         message: "Campo obrigatório!"
@@ -190,8 +190,8 @@
                     return false;
                 }
 
-                if (new_user_age == "" || typeof(new_user_age) == "undefined") {
-                    $('input[name="new_user_age"]').focus();
+                if (birthday_nu == "" || typeof(birthday_nu) == "undefined") {
+                    $('input[name="birthday_nu"]').focus();
                     iziToast.error({
                         title: 'Ops',
                         message: "Campo obrigatório!"
@@ -199,8 +199,8 @@
                     return false;
                 }
 
-                if (new_user_pass == "" || typeof(new_user_pass) == "undefined") {
-                    $('input[name="new_user_pass"]').focus();
+                if (pass_nu == "" || typeof(pass_nu) == "undefined") {
+                    $('input[name="pass_nu"]').focus();
                     iziToast.error({
                         title: 'Ops',
                         message: "Campo obrigatório!"
@@ -209,10 +209,10 @@
                 }
 
                 let items = new URLSearchParams();
-                items.append("new_user_name", new_user_name);
-                items.append("new_user_email", new_user_email);
-                items.append("new_user_age", new_user_age);
-                items.append("new_user_pass", new_user_pass);
+                items.append("name_nu", name_nu);
+                items.append("login_nu", login_nu);
+                items.append("birthday_nu", birthday_nu);
+                items.append("pass_nu", pass_nu);
 
                 axios({
                     method: "POST",
@@ -249,12 +249,12 @@
             }
 
             function setNewPass(){
-                var newpass_email = $('input[name="newpass_email"]').val();
-                var newpass_pass_set = $('input[name="newpass_pass"]').val();
-                var newpass_pass = window.btoa(newpass_pass_set);
+                var login_np = $('input[name="login_np"]').val();
+                var pass_set = $('input[name="pass_np"]').val();
+                var pass_np = window.btoa(pass_set);
                 
-                if (newpass_email == "" || typeof(newpass_email) == "undefined") {
-                    $('input[name="newpass_email"]').focus();
+                if (login_np == "" || typeof(login_np) == "undefined") {
+                    $('input[name="login_np"]').focus();
                     iziToast.error({
                         title: 'Ops',
                         message: "Campo obrigatório!"
@@ -262,8 +262,8 @@
                     return false;
                 }
 
-                if (newpass_pass_set == "" || typeof(newpass_pass_set) == "undefined") {
-                    $('input[name="newpass_pass"]').focus();
+                if (pass_set == "" || typeof(pass_set) == "undefined") {
+                    $('input[name="pass_np"]').focus();
                     iziToast.error({
                         title: 'Ops',
                         message: "Campo obrigatório!"
@@ -272,8 +272,8 @@
                 }
 
                 let items = new URLSearchParams();
-                items.append("newpass_email", newpass_email);
-                items.append("newpass_pass", newpass_pass);
+                items.append("login_np", login_np);
+                items.append("pass_np", pass_np);
 
                 axios({
                     method: "POST",

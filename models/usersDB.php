@@ -33,21 +33,21 @@
       return $returner;
     }
 
-    public function logIn($login_email, $login_pass){
-      $query = "SELECT * FROM users WHERE email = :login_email";
+    public function logIn($login, $pass){
+      $query = "SELECT * FROM users WHERE login = :login";
       $query = $this->db->prepare($query);
-      $query->bindValue(":login_email", $login_email);
+      $query->bindValue(":login", $login);
       $query->execute();
       if ($query->rowCount() > 0) {
         $returner = $query->fetch();
         if ($returner['blocked'] == "N") {
-          $query = "SELECT * FROM users WHERE email = :login_email AND active = 'Y'";
+          $query = "SELECT * FROM users WHERE login = :login AND active = 'Y'";
           $query = $this->db->prepare($query);
-          $query->bindValue(":login_email", $login_email);
+          $query->bindValue(":login", $login);
           $query->execute();
           if ($query->rowCount() > 0) {
             $query = $query->fetch();
-            if (password_verify($login_pass, $query['pass'])) {
+            if (password_verify($pass, $query['pass'])) {
               $_SESSION['prymarya2_session_log'] = $query['id_usu'];
               $response = array(
                 "code" => "08",
@@ -85,7 +85,7 @@
         unset($_SESSION['prymarya2_session_log']);
         $response = array(
           "code" => "12",
-          "message" => "Email não cadastrado no sistema!"
+          "message" => "login não cadastrado no sistema!"
         );
         echo json_encode($response);
         exit;
@@ -98,27 +98,27 @@
     }
 
     //QUERIES DE MODIFICAÇÃO
-    public function setNewUser($new_user_name, $new_user_email, $new_user_age, $new_user_pass){
-      $query = "SELECT * FROM users WHERE email = :new_user_email";
+    public function setNewUser($name_nu, $login_nu, $birthday_nu, $pass_nu){
+      $query = "SELECT * FROM users WHERE login = :login_nu";
       // echo $query;exit;
       $query = $this->db->prepare($query);
-      $query->bindValue(":new_user_email", $new_user_email);
+      $query->bindValue(":login_nu", $login_nu);
       $query->execute();
       if ($query->rowCount() > 0) {
         $response = array(
           "code" => "01",
-          "message" => "Email já existe no sistema!"
+          "message" => "login já existe no sistema!"
         );
         echo json_encode($response);
         exit;
       } else {
-        $query = "INSERT INTO users SET name = :new_user_name, email = :new_user_email, pass = :new_user_pass, age = :new_user_age";
+        $query = "INSERT INTO users SET name = :name_nu, login = :login_nu, pass = :pass_nu, birthday = :birthday_nu, blocked = 'N', active = 'Y'";
         //echo $query;exit;
         $query = $this->db->prepare($query);
-        $query->bindValue(":new_user_name", $new_user_name);
-        $query->bindValue(":new_user_email", $new_user_email);
-        $query->bindValue(":new_user_pass", $new_user_pass);
-        $query->bindValue(":new_user_age", $new_user_age);
+        $query->bindValue(":name_nu", $name_nu);
+        $query->bindValue(":login_nu", $login_nu);
+        $query->bindValue(":pass_nu", $pass_nu);
+        $query->bindValue(":birthday_nu", $birthday_nu);
         $query->execute();
         $response = array(
           "code" => "02",
@@ -129,32 +129,32 @@
       }
     }
 
-    public function setEditUser($user_active, $user_name, $user_email, $user_age, $user_pass, $id_usu){
-      $query = "SELECT * FROM users WHERE email = :user_email AND id_usu != :id_usu";
+    public function setEditUser($user_active, $user_name, $user_login, $user_birthday, $user_pass, $id_usu){
+      $query = "SELECT * FROM users WHERE login = :user_login AND id_usu != :id_usu";
       //echo $query;exit;
       $query = $this->db->prepare($query);
-      $query->bindValue(":user_email", $user_email);
+      $query->bindValue(":user_login", $user_login);
       $query->bindValue(":id_usu", $id_usu);
       $query->execute();
       if ($query->rowCount() > 0) {
         $response = array(
           "code" => "13",
-          "message" => "Outro usuário com este email!"
+          "message" => "Outro usuário com este login!"
         );
         echo json_encode($response);
         exit();
       } else {
         if ($user_pass !== '') {
-          $query = "UPDATE users SET active= :user_active, name = :user_name, email = :user_email, age = :user_age, pass = :user_pass WHERE id_usu = :id_usu";
+          $query = "UPDATE users SET active= :user_active, name = :user_name, login = :user_login, birthday = :user_birthday, pass = :user_pass WHERE id_usu = :id_usu";
         } else {
-          $query = "UPDATE users SET active= :user_active, name = :user_name, email = :user_email, age = :user_age WHERE id_usu = :id_usu";
+          $query = "UPDATE users SET active= :user_active, name = :user_name, login = :user_login, birthday = :user_birthday WHERE id_usu = :id_usu";
         }
         // echo $query;exit;
         $query = $this->db->prepare($query);
         $query->bindValue(":user_active", $user_active);
         $query->bindValue(":user_name", $user_name);
-        $query->bindValue(":user_email", $user_email);
-        $query->bindValue(":user_age", $user_age);
+        $query->bindValue(":user_login", $user_login);
+        $query->bindValue(":user_birthday", $user_birthday);
         if ($user_pass !== '') {
           $query->bindValue(":user_pass", $user_pass);
         }
@@ -228,18 +228,18 @@
       }
     }
 
-    public function setNewPass($newpass_email, $newpass_pass){
-      $query = "SELECT * FROM users WHERE email = :newpass_email";
+    public function setNewPass($login_np, $pass_np){
+      $query = "SELECT * FROM users WHERE login = :login_np";
         //echo $query;exit;
         $query = $this->db->prepare($query);
-        $query->bindValue(":newpass_email", $newpass_email);
+        $query->bindValue(":login_np", $login_np);
         $query->execute();
         if ($query->rowCount() > 0) {
-          $query = "UPDATE users SET pass = :newpass_pass WHERE email = :newpass_email";
+          $query = "UPDATE users SET pass = :pass_np WHERE login = :login_np";
           //echo $query;exit;
           $query = $this->db->prepare($query);
-          $query->bindValue(":newpass_pass", $newpass_pass);
-          $query->bindValue(":newpass_email", $newpass_email);
+          $query->bindValue(":pass_np", $pass_np);
+          $query->bindValue(":login_np", $login_np);
           $query->execute();
           $response = array(
             "code" => "06",
@@ -250,7 +250,7 @@
         } else {
           $response = array(
             "code" => "07",
-            "message" => "#07 - Email não cadastrado no sistema!"
+            "message" => "#07 - login não cadastrado no sistema!"
           );
           echo json_encode($response);
           exit();
