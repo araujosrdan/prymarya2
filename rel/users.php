@@ -56,13 +56,13 @@
             $pdf->SetFont('Times','',12);
             $pdf->Cell(10,20,'ID:',0,0,"L");
             $pdf->Cell(60,20,'Nome',0,0,"L");
-            $pdf->Cell(60,20,'Email',0,0,"L");
+            $pdf->Cell(60,20,'Login / Email',0,0,"L");
             $pdf->Cell(50,20,'Status',0,0,"L");
             $pdf->Ln(20);
             foreach ($returner as $key) {
               $pdf->Cell(10,20,$key['id_usu'],0,0,"L");
               $pdf->Cell(60,20,$key['name'],0,0,"L");
-              $pdf->Cell(60,20,$key['email'],0,0,"L");
+              $pdf->Cell(60,20,$key['login'],0,0,"L");
               if ($key['active'] == 'Y') {
                 $pdf->Cell(50,20,'Ativo',0,0,"L");
               } else {
@@ -130,13 +130,13 @@
           $pdf->SetFont('Times','',12);
           $pdf->Cell(10,20,'ID:',0,0,"L");
           $pdf->Cell(60,20,'Nome',0,0,"L");
-          $pdf->Cell(60,20,'Email',0,0,"L");
+          $pdf->Cell(60,20,'Login / Email',0,0,"L");
           $pdf->Cell(50,20,'Status',0,0,"L");
           $pdf->Ln(20);
           foreach ($returner as $key) {
             $pdf->Cell(10,20,$key['id_usu'],0,0,"L");
             $pdf->Cell(60,20,$key['name'],0,0,"L");
-            $pdf->Cell(60,20,$key['email'],0,0,"L");
+            $pdf->Cell(60,20,$key['login'],0,0,"L");
             if ($key['active'] == 'Y') {
               $pdf->Cell(50,20,'Ativo',0,0,"L");
             } else {
