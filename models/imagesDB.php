@@ -4,6 +4,15 @@
    */
   class imagesDB extends model
   {
+
+    // Setando campos da tabela do banco de dados
+    private $dbf_table = 'images';
+    private $dbf_id = 'id_img';
+    private $dbf_fid_usu = 'fid_usu';
+    private $dbf_name = 'name';
+    private $dbf_description = 'description';
+    private $dbf_addr = 'addr';
+
     public function getImages($id){
 
       try {
@@ -11,7 +20,7 @@
         // Iniciando transação
         $this->db->beginTransaction();
         $returner = array();
-        $query = "SELECT LPAD(id_img,3,'0') AS cod_img, img.* FROM images img WHERE fid_usu = '$id' ORDER BY cod_img DESC";
+        $query = "SELECT LPAD(" . $this->dbf_id . ",3,'0') AS cod_img, img.* FROM " . $this->dbf_table . " img WHERE " . $this->dbf_fid_usu . " = '$id' ORDER BY cod_img DESC";
         $query = $this->db->query($query);
         // Commitando transação
         $this->db->commit();
@@ -68,7 +77,7 @@
               }
               imagecopyresampled($img, $origin, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
               imagejpeg($img, $tmppath, 80);
-              $query = "INSERT INTO images SET fid_usu = '$id', addr = '$tmpname'";
+              $query = "INSERT INTO " . $this->dbf_table . " SET " . $this->dbf_fid_usu . " = '$id', " . $this->dbf_addr . " = '$tmpname'";
               //echo $query;exit;
               $query = $this->db->query($query);
               header("Refresh:0");
@@ -85,7 +94,7 @@
 
         // Iniciando transação
         $this->db->beginTransaction();
-        $query = "UPDATE images SET name = :name, description = :description WHERE id_img = :id_img";
+        $query = "UPDATE " . $this->dbf_table . " SET " . $this->dbf_name . " = :name, " . $this->dbf_description . " = :description WHERE " . $this->dbf_id . " = :id_img";
         $query = $this->db->prepare($query);
         $query->bindValue(":name", $name);
         $query->bindValue(":description", $description);
@@ -116,7 +125,7 @@
 
         // Iniciando transação
         $this->db->beginTransaction();
-        $query = "SELECT fid_usu, addr FROM images WHERE id_img = '$pic_id'";
+        $query = "SELECT " . $this->dbf_fid_usu . ", " . $this->dbf_addr . " FROM " . $this->dbf_table . " WHERE " . $this->dbf_id . " = '$pic_id'";
         //echo $query;exit;
         $query = $this->db->query($query);
         // Commitando transação
@@ -132,10 +141,10 @@
       } finally {
 
         $array = $query->fetch();
-        $user_folder = 'media/images/' . $array['fid_usu'];
+        $user_folder = 'media/images/' . $array[$this->dbf_fid_usu];
         chmod($user_folder, 0777);
         $pic = $array['addr'];
-        $query = "DELETE FROM images WHERE id_img = '$pic_id'";
+        $query = "DELETE FROM " . $this->dbf_table . " WHERE " . $this->dbf_id . " = '$pic_id'";
         //echo $query;exit;
         $query = $this->db->query($query);
         array_map("unlink", glob($user_folder . "/" . $pic));

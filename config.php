@@ -1,6 +1,12 @@
 <?php
   require 'enviroment.php';
 
+  // Setando sessão principal do sistema para uso externo
+  global $core_session_ex;
+  if (isset($_SESSION['prymarya2_session_log'])) {
+    $core_session_ex = $_SESSION['prymarya2_session_log'];
+  }
+
   global $config;
   $config = array();
   if (ENVIROMENT == 'development') {

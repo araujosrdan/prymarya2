@@ -4,11 +4,25 @@
    */
   class usersDB extends model
   {
+    // Setando sessão principal do sistema
+    private $core_session = 'prymarya2_session_log';
+
+    // Setando campos da tabela do banco de dados
+    private $dbf_table = 'users';
+    private $dbf_id = 'id_usu';
+    private $dbf_login = 'login';
+    private $dbf_pass = 'pass';
+    private $dbf_name = 'name';
+    private $dbf_birthday = 'birthday';
+    private $dbf_image = 'image';
+    private $dbf_blocked = 'blocked';
+    private $dbf_active = 'active';
+
     //QUERIES DE LEITURA
     public function users_check_session(){
-      if (!isset($_SESSION['prymarya2_session_log']) || (isset($_SESSION['prymarya2_session_log'])) && empty($_SESSION['prymarya2_session_log'])) {
+      if (!isset($_SESSION[$this->core_session]) || (isset($_SESSION[$this->core_session])) && empty($_SESSION[$this->core_session])) {
         header("Location: " . BASEURL . "welcome");
-        exit;
+        exit();
       }
     }
 
@@ -18,7 +32,8 @@
         // Iniciando transação
         $this->db->beginTransaction();
         $returner = array();
-        $query = "SELECT LPAD(id_usu,3,'0') AS cod_usu, usu.* FROM users usu ORDER BY cod_usu";
+        $query = "SELECT LPAD(". $this->dbf_id .",3,'0') AS cod_usu, usu.* FROM ". $this->dbf_table ." usu ORDER BY cod_usu";
+        // echo $query;exit();
         $query = $this->db->query($query);
         // Commitando transação
         $this->db->commit();
@@ -49,7 +64,7 @@
         // Iniciando transação
         $this->db->beginTransaction();
         $returner = array();
-        $query = "SELECT * FROM users WHERE id_usu = '$id'";
+        $query = "SELECT * FROM ". $this->dbf_table ." WHERE " . $this->dbf_id . " = '$id'";
         //echo $query;exit;
         $query = $this->db->query($query);
         // Commitando transação
@@ -80,7 +95,7 @@
 
         // Iniciando transação
         $this->db->beginTransaction();
-        $query = "SELECT * FROM users WHERE login = :login";
+        $query = "SELECT * FROM ". $this->dbf_table ." WHERE " . $this->dbf_login . " = :login";
         $query = $this->db->prepare($query);
         $query->bindValue(":login", $login);
         $query->execute();
@@ -98,15 +113,15 @@
 
         if ($query->rowCount() > 0) {
           $returner = $query->fetch();
-          if ($returner['blocked'] == "N") {
-            $query = "SELECT * FROM users WHERE login = :login AND active = 'Y'";
+          if ($returner[$this->dbf_blocked] == "N") {
+            $query = "SELECT * FROM ". $this->dbf_table ." WHERE " . $this->dbf_login . " = :login AND " . $this->dbf_active . " = 'Y'";
             $query = $this->db->prepare($query);
             $query->bindValue(":login", $login);
             $query->execute();
             if ($query->rowCount() > 0) {
               $query = $query->fetch();
-              if (password_verify($pass, $query['pass'])) {
-                $_SESSION['prymarya2_session_log'] = $query['id_usu'];
+              if (password_verify($pass, $query[$this->dbf_pass])) {
+                $_SESSION[$this->core_session] = $query[$this->dbf_id];
                 $response = array(
                   "code" => "08",
                   "message" => "[Acesso permitido]"
@@ -114,7 +129,7 @@
                 echo json_encode($response);
                 exit();
               } else {
-                unset($_SESSION['prymarya2_session_log']);
+                unset($_SESSION[$this->core_session]);
                 $response = array(
                   "code" => "09",
                   "message" => "Senha informada incorreta!"
@@ -123,7 +138,7 @@
                 exit();
               }
             } else {
-              unset($_SESSION['prymarya2_session_log']);
+              unset($_SESSION[$this->core_session]);
               $response = array(
                 "code" => "10",
                 "message" => "Conta inativa!"
@@ -140,7 +155,7 @@
               exit();
           }
         } else {
-          unset($_SESSION['prymarya2_session_log']);
+          unset($_SESSION[$this->core_session]);
           $response = array(
             "code" => "12",
             "message" => "login não cadastrado no sistema!"
@@ -154,7 +169,7 @@
     }
 
     public function logOff(){
-      unset($_SESSION['prymarya2_session_log']);
+      unset($_SESSION[$this->core_session]);
       header("Location: " . BASEURL);
     }
 
@@ -165,7 +180,7 @@
 
         // Iniciando transação
         $this->db->beginTransaction();
-        $query = "SELECT * FROM users WHERE login = :login_nu";
+        $query = "SELECT * FROM ". $this->dbf_table ." WHERE " . $this->dbf_login . " = :login_nu";
         // echo $query;exit;
         $query = $this->db->prepare($query);
         $query->bindValue(":login_nu", $login_nu);
@@ -190,7 +205,7 @@
           echo json_encode($response);
           exit();
         } else {
-          $query = "INSERT INTO users SET name = :name_nu, login = :login_nu, pass = :pass_nu, birthday = :birthday_nu, blocked = 'N', active = 'Y'";
+          $query = "INSERT INTO ". $this->dbf_table ." SET " . $this->dbf_name . " = :name_nu, " . $this->dbf_login . " = :login_nu, " . $this->dbf_pass . " = :pass_nu, " . $this->dbf_birthday . " = :birthday_nu, " . $this->dbf_blocked . " = 'N', " . $this->dbf_active . " = 'Y'";
           //echo $query;exit;
           $query = $this->db->prepare($query);
           $query->bindValue(":name_nu", $name_nu);
@@ -216,7 +231,7 @@
 
         // Iniciando transação
         $this->db->beginTransaction();
-        $query = "SELECT * FROM users WHERE login = :user_login AND id_usu != :id_usu";
+        $query = "SELECT * FROM ". $this->dbf_table ." WHERE " . $this->dbf_login . " = :user_login AND " . $this->dbf_id . " != :id_usu";
         //echo $query;exit;
         $query = $this->db->prepare($query);
         $query->bindValue(":user_login", $user_login);
@@ -243,9 +258,9 @@
           exit();
         } else {
           if ($user_pass !== '') {
-            $query = "UPDATE users SET active= :user_active, name = :user_name, login = :user_login, birthday = :user_birthday, pass = :user_pass WHERE id_usu = :id_usu";
+            $query = "UPDATE ". $this->dbf_table ." SET " . $this->dbf_active . " = :user_active, " . $this->dbf_name . " = :user_name, " . $this->dbf_login . " = :user_login, " . $this->dbf_birthday . " = :user_birthday, " . $this->dbf_pass . " = :user_pass WHERE " . $this->dbf_id . " = :id_usu";
           } else {
-            $query = "UPDATE users SET active= :user_active, name = :user_name, login = :user_login, birthday = :user_birthday WHERE id_usu = :id_usu";
+            $query = "UPDATE ". $this->dbf_table ." SET " . $this->dbf_active . " = :user_active, " . $this->dbf_name . " = :user_name, " . $this->dbf_login . " = :user_login, " . $this->dbf_birthday . " = :user_birthday WHERE " . $this->dbf_id . " = :id_usu";
           }
           // echo $query;exit;
           $query = $this->db->prepare($query);
@@ -279,14 +294,14 @@
             mkdir($user_folder, 0777);
             chmod($user_folder, 0777);
         }
-        $query = "SELECT image FROM users WHERE id_usu = :id";
+        $query = "SELECT " . $this->dbf_image . " FROM ". $this->dbf_table ." WHERE " . $this->dbf_id . " = :id";
         $query = $this->db->prepare($query);
         $query->bindValue(":id", $id_usu);
         $query->execute();
         $oldpic = $query->fetch();
         if (!empty($oldpic)) {
           chmod($user_folder, 0777);
-          @array_map("unlink", glob($user_folder . "/" . $oldpic['image']));
+          @array_map("unlink", glob($user_folder . "/" . $oldpic[$this->dbf_image]));
         }
         $type = $image['type'];
         if (in_array($type, array('image/jpeg', 'image/png'))) {
@@ -306,7 +321,7 @@
           $origin = imagecreatefromjpeg($tmppath);
           imagecopyresampled($img, $origin, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
           imagejpeg($img, $tmppath, 80);
-          $query = "UPDATE users SET image = :image WHERE id_usu = :id";
+          $query = "UPDATE ". $this->dbf_table ." SET " . $this->dbf_image . " = :image WHERE " . $this->dbf_id . " = :id";
           //echo $query;exit;
           $query = $this->db->prepare($query);
           $query->bindValue(":image", $tmpname);
@@ -335,7 +350,7 @@
 
         // Iniciando transação
         $this->db->beginTransaction();
-        $query = "SELECT * FROM users WHERE login = :login_np";
+        $query = "SELECT * FROM ". $this->dbf_table ." WHERE " . $this->dbf_login . " = :login_np";
         //echo $query;exit;
         $query = $this->db->prepare($query);
         $query->bindValue(":login_np", $login_np);
@@ -353,7 +368,7 @@
       } finally {
 
         if ($query->rowCount() > 0) {
-          $query = "UPDATE users SET pass = :pass_np WHERE login = :login_np";
+          $query = "UPDATE ". $this->dbf_table ." SET " . $this->dbf_pass . " = :pass_np WHERE " . $this->dbf_login . " = :login_np";
           //echo $query;exit;
           $query = $this->db->prepare($query);
           $query->bindValue(":pass_np", $pass_np);
@@ -384,7 +399,7 @@
 
         // Iniciando transação
         $this->db->beginTransaction();
-        $query = "DELETE FROM users WHERE id_usu = '$id_usu'";
+        $query = "DELETE FROM ". $this->dbf_table ." WHERE " . $this->dbf_id . " = '$id_usu'";
         //echo $query;exit;
         $query = $this->db->query($query);
         // Commitando transação
@@ -399,8 +414,8 @@
         
       } finally {
 
-        if ($_SESSION['prymarya2_session_log'] === $id_usu) {
-          unset($_SESSION['prymarya2_session_log']);
+        if ($_SESSION[$this->core_session] === $id_usu) {
+          unset($_SESSION[$this->core_session]);
           $response = array(
             "code" => "15",
             "message" => "Registro deletado com sucesso!"
