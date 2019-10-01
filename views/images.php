@@ -31,7 +31,7 @@
                             <?php endif; ?>
                             <div class="">
                                 <a href="#" data-toggle="modal" data-target="#image_edit<?php echo $var['id_img']; ?>" class="btn btn-dark" title="Editar imagem">Editar</a> -
-                                <a href="#" data-toggle="modal" data-target="#image_delete<?php echo $var['id_img']; ?>" class="btn btn-dark" title="Excluir imagem">Excluir</a>
+                                <button type="button" class="btn btn-danger" onclick="setDelImg(<?php echo $var['id_img']; ?>)">Excluir</button>
                             </div>
                         </div>
                     <?php endforeach; ?>
@@ -60,24 +60,6 @@
                 </div>
             </div>
             <!-- MODAL EDITAR FIM -->
-            <!-- MODAL DELETAR INICIO -->
-            <div class="modal fade" id="image_delete<?php echo $var['id_img']; ?>" tabindex="-1" role="dialog" aria-labelledby="image_delete">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <form method="POST" name="editUser">
-                                <div class="form-group">
-                                    <p>Deletar imagem</p>
-                                    <img src="<?php echo BASEURL; ?>media/images/<?php echo $var['fid_usu']; ?>/<?php echo $var['addr']; ?>" class="" />
-                                    <input type="hidden" name="id_img" id="id_img" value="<?php echo $var['id_img']; ?>" />
-                                </div>
-                                <input type="submit" value="Excluir" id="deleteImageDone" name="deleteImageDone" class="btn btn-danger" />
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- MODAL DELETAR FIM -->
             <?php endforeach; ?>
         </div>
     </div>
@@ -96,3 +78,59 @@
         </div>
     </div>
 <?php endif; ?>
+
+<script type="text/javascript">
+    function setDelImg(id_img){
+        iziToast.question({
+            timeout: 20000,
+            close: false,
+            overlay: true,
+            displayMode: 'once',
+            id: 'question',
+            zindex: 999,
+            title: "Deletar",
+            message: 'Quer mesmo deletar este registro? Este processo não tem volta!',
+            position: 'center',
+            buttons: [
+                ['<button>Sim, por favor!</button>', function (instance, toast) {
+
+                    instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+                    let items = new URLSearchParams();
+                    items.append("id_img", id_img);
+
+                    axios({
+                        method: "POST",
+                        url: "images/setDelImg",
+                        data: items
+                    }).then(res => {
+                        var data_return = JSON.stringify(res.data);
+                            response = JSON.parse(data_return);
+
+                        if (response.code == "18") {
+                            Swal.fire({
+                                type: "success",
+                                text: response.message
+                            }).then(() => {
+                                location.reload();
+                            });    
+                        }
+
+                    }).catch(function(error){
+                        console.log(error);
+                    });
+
+                }, true],
+                ['<button><b>Não! Mudei de ideia.</b></button>', function (instance, toast) {
+
+                    instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+                    iziToast.info({
+                        title: 'Ok! ',
+                        message: "Registro mantido!"
+                    });
+                    return false;
+
+                }],
+            ]
+        });
+    }
+</script>

@@ -13,83 +13,144 @@
     }
 
     public function getUsers(){
-      $returner = array();
-      $query = "SELECT LPAD(id_usu,3,'0') AS cod_usu, usu.* FROM users usu ORDER BY cod_usu";
-      $query = $this->db->query($query);
-      if ($query->rowCount() > 0) {
-        $returner = $query->fetchAll();
+      try {
+
+        // Iniciando transação
+        $this->db->beginTransaction();
+        $returner = array();
+        $query = "SELECT LPAD(id_usu,3,'0') AS cod_usu, usu.* FROM users usu ORDER BY cod_usu";
+        $query = $this->db->query($query);
+        // Commitando transação
+        $this->db->commit();
+
+      } catch (PDOException $e) {
+
+        $e->getCode();
+        // Em caso de erro a transação é cancelada
+        $this->db->rollBack();
+        exit();
+
+      } finally {
+
+         if ($query->rowCount() > 0) {
+            $returner = $query->fetchAll();
+         }
+         return $returner;
+         exit();
+
       }
-      return $returner;
+    
     }
 
     public function getUserSelected($id){
-      $returner = array();
-      $query = "SELECT * FROM users WHERE id_usu = '$id'";
-      //echo $query;exit;
-      $query = $this->db->query($query);
-      if ($query->rowCount() > 0) {
-        $returner = $query->fetchAll();
+
+      try {
+
+        // Iniciando transação
+        $this->db->beginTransaction();
+        $returner = array();
+        $query = "SELECT * FROM users WHERE id_usu = '$id'";
+        //echo $query;exit;
+        $query = $this->db->query($query);
+        // Commitando transação
+        $this->db->commit();
+        
+      } catch (Exception $e) {
+
+        $e->getCode();
+        // Em caso de erro a transação é cancelada
+        $this->db->rollBack();
+        exit();
+        
+      } finally {
+
+        if ($query->rowCount() > 0) {
+          $returner = $query->fetchAll();
+        }
+        return $returner;
+        exit();
+
       }
-      return $returner;
+
     }
 
     public function logIn($login, $pass){
-      $query = "SELECT * FROM users WHERE login = :login";
-      $query = $this->db->prepare($query);
-      $query->bindValue(":login", $login);
-      $query->execute();
-      if ($query->rowCount() > 0) {
-        $returner = $query->fetch();
-        if ($returner['blocked'] == "N") {
-          $query = "SELECT * FROM users WHERE login = :login AND active = 'Y'";
-          $query = $this->db->prepare($query);
-          $query->bindValue(":login", $login);
-          $query->execute();
-          if ($query->rowCount() > 0) {
-            $query = $query->fetch();
-            if (password_verify($pass, $query['pass'])) {
-              $_SESSION['prymarya2_session_log'] = $query['id_usu'];
-              $response = array(
-                "code" => "08",
-                "message" => "[Acesso permitido]"
-              );
-              echo json_encode($response);
-              exit;
+
+      try {
+
+        // Iniciando transação
+        $this->db->beginTransaction();
+        $query = "SELECT * FROM users WHERE login = :login";
+        $query = $this->db->prepare($query);
+        $query->bindValue(":login", $login);
+        $query->execute();
+        // Commitando transação
+        $this->db->commit();
+        
+      } catch (Exception $e) {
+
+        $e->getCode();
+        // Em caso de erro a transação é cancelada
+        $this->db->rollBack();
+        exit();
+        
+      } finally {
+
+        if ($query->rowCount() > 0) {
+          $returner = $query->fetch();
+          if ($returner['blocked'] == "N") {
+            $query = "SELECT * FROM users WHERE login = :login AND active = 'Y'";
+            $query = $this->db->prepare($query);
+            $query->bindValue(":login", $login);
+            $query->execute();
+            if ($query->rowCount() > 0) {
+              $query = $query->fetch();
+              if (password_verify($pass, $query['pass'])) {
+                $_SESSION['prymarya2_session_log'] = $query['id_usu'];
+                $response = array(
+                  "code" => "08",
+                  "message" => "[Acesso permitido]"
+                );
+                echo json_encode($response);
+                exit();
+              } else {
+                unset($_SESSION['prymarya2_session_log']);
+                $response = array(
+                  "code" => "09",
+                  "message" => "Senha informada incorreta!"
+                );
+                echo json_encode($response);
+                exit();
+              }
             } else {
               unset($_SESSION['prymarya2_session_log']);
               $response = array(
-                "code" => "09",
-                "message" => "Senha informada incorreta!"
+                "code" => "10",
+                "message" => "Conta inativa!"
               );
               echo json_encode($response);
-              exit;
+              exit();
             }
           } else {
-            unset($_SESSION['prymarya2_session_log']);
-            $response = array(
-              "code" => "10",
-              "message" => "Conta inativa!"
-            );
-            echo json_encode($response);
-            exit;
+              $response = array(
+                "code" => "11",
+                "message" => "Conta bloqueada!"
+              );
+              echo json_encode($response);
+              exit();
           }
         } else {
-            $response = array(
-              "code" => "11",
-              "message" => "Conta bloqueada!"
-            );
-            echo json_encode($response);
-            exit;
+          unset($_SESSION['prymarya2_session_log']);
+          $response = array(
+            "code" => "12",
+            "message" => "login não cadastrado no sistema!"
+          );
+          echo json_encode($response);
+          exit();
         }
-      } else {
-        unset($_SESSION['prymarya2_session_log']);
-        $response = array(
-          "code" => "12",
-          "message" => "login não cadastrado no sistema!"
-        );
-        echo json_encode($response);
-        exit;
+
       }
+
     }
 
     public function logOff(){
@@ -99,74 +160,114 @@
 
     //QUERIES DE MODIFICAÇÃO
     public function setNewUser($name_nu, $login_nu, $birthday_nu, $pass_nu){
-      $query = "SELECT * FROM users WHERE login = :login_nu";
-      // echo $query;exit;
-      $query = $this->db->prepare($query);
-      $query->bindValue(":login_nu", $login_nu);
-      $query->execute();
-      if ($query->rowCount() > 0) {
-        $response = array(
-          "code" => "01",
-          "message" => "login já existe no sistema!"
-        );
-        echo json_encode($response);
-        exit;
-      } else {
-        $query = "INSERT INTO users SET name = :name_nu, login = :login_nu, pass = :pass_nu, birthday = :birthday_nu, blocked = 'N', active = 'Y'";
-        //echo $query;exit;
+
+      try {
+
+        // Iniciando transação
+        $this->db->beginTransaction();
+        $query = "SELECT * FROM users WHERE login = :login_nu";
+        // echo $query;exit;
         $query = $this->db->prepare($query);
-        $query->bindValue(":name_nu", $name_nu);
         $query->bindValue(":login_nu", $login_nu);
-        $query->bindValue(":pass_nu", $pass_nu);
-        $query->bindValue(":birthday_nu", $birthday_nu);
         $query->execute();
-        $response = array(
-          "code" => "02",
-          "message" => "Registro gravado com sucesso!"
-        );
-        echo json_encode($response);
+        // Commitando transação
+        $this->db->commit();
+        
+      } catch (Exception $e) {
+
+        $e->getCode();
+        // Em caso de erro a transação é cancelada
+        $this->db->rollBack();
         exit();
+        
+      } finally {
+
+        if ($query->rowCount() > 0) {
+          $response = array(
+            "code" => "01",
+            "message" => "login já existe no sistema!"
+          );
+          echo json_encode($response);
+          exit();
+        } else {
+          $query = "INSERT INTO users SET name = :name_nu, login = :login_nu, pass = :pass_nu, birthday = :birthday_nu, blocked = 'N', active = 'Y'";
+          //echo $query;exit;
+          $query = $this->db->prepare($query);
+          $query->bindValue(":name_nu", $name_nu);
+          $query->bindValue(":login_nu", $login_nu);
+          $query->bindValue(":pass_nu", $pass_nu);
+          $query->bindValue(":birthday_nu", $birthday_nu);
+          $query->execute();
+          $response = array(
+            "code" => "02",
+            "message" => "Registro gravado com sucesso!"
+          );
+          echo json_encode($response);
+          exit();
+        }
+
       }
+
     }
 
     public function setEditUser($user_active, $user_name, $user_login, $user_birthday, $user_pass, $id_usu){
-      $query = "SELECT * FROM users WHERE login = :user_login AND id_usu != :id_usu";
-      //echo $query;exit;
-      $query = $this->db->prepare($query);
-      $query->bindValue(":user_login", $user_login);
-      $query->bindValue(":id_usu", $id_usu);
-      $query->execute();
-      if ($query->rowCount() > 0) {
-        $response = array(
-          "code" => "13",
-          "message" => "Outro usuário com este login!"
-        );
-        echo json_encode($response);
-        exit();
-      } else {
-        if ($user_pass !== '') {
-          $query = "UPDATE users SET active= :user_active, name = :user_name, login = :user_login, birthday = :user_birthday, pass = :user_pass WHERE id_usu = :id_usu";
-        } else {
-          $query = "UPDATE users SET active= :user_active, name = :user_name, login = :user_login, birthday = :user_birthday WHERE id_usu = :id_usu";
-        }
-        // echo $query;exit;
+
+      try {
+
+        // Iniciando transação
+        $this->db->beginTransaction();
+        $query = "SELECT * FROM users WHERE login = :user_login AND id_usu != :id_usu";
+        //echo $query;exit;
         $query = $this->db->prepare($query);
-        $query->bindValue(":user_active", $user_active);
-        $query->bindValue(":user_name", $user_name);
         $query->bindValue(":user_login", $user_login);
-        $query->bindValue(":user_birthday", $user_birthday);
-        if ($user_pass !== '') {
-          $query->bindValue(":user_pass", $user_pass);
-        }
         $query->bindValue(":id_usu", $id_usu);
         $query->execute();
-        $response = array(
-          "code" => "14",
-          "message" => "Usuário atualizado com sucesso!"
-        );
-        echo json_encode($response);
+        // Commitando transação
+        $this->db->commit();
+        
+      } catch (Exception $e) {
+
+        $e->getCode();
+        // Em caso de erro a transação é cancelada
+        $this->db->rollBack();
         exit();
+        
+      } finally {
+
+        if ($query->rowCount() > 0) {
+          $response = array(
+            "code" => "13",
+            "message" => "Outro usuário com este login!"
+          );
+          echo json_encode($response);
+          exit();
+        } else {
+          if ($user_pass !== '') {
+            $query = "UPDATE users SET active= :user_active, name = :user_name, login = :user_login, birthday = :user_birthday, pass = :user_pass WHERE id_usu = :id_usu";
+          } else {
+            $query = "UPDATE users SET active= :user_active, name = :user_name, login = :user_login, birthday = :user_birthday WHERE id_usu = :id_usu";
+          }
+          // echo $query;exit;
+          $query = $this->db->prepare($query);
+          $query->bindValue(":user_active", $user_active);
+          $query->bindValue(":user_name", $user_name);
+          $query->bindValue(":user_login", $user_login);
+          $query->bindValue(":user_birthday", $user_birthday);
+          if ($user_pass !== '') {
+            $query->bindValue(":user_pass", $user_pass);
+          }
+          $query->bindValue(":id_usu", $id_usu);
+          $query->execute();
+          $response = array(
+            "code" => "14",
+            "message" => "Usuário atualizado com sucesso!"
+          );
+          echo json_encode($response);
+          exit();
+        }
+
       }
+
     }
 
     public function setUserImg($image, $id_usu){
@@ -229,11 +330,28 @@
     }
 
     public function setNewPass($login_np, $pass_np){
-      $query = "SELECT * FROM users WHERE login = :login_np";
+
+      try {
+
+        // Iniciando transação
+        $this->db->beginTransaction();
+        $query = "SELECT * FROM users WHERE login = :login_np";
         //echo $query;exit;
         $query = $this->db->prepare($query);
         $query->bindValue(":login_np", $login_np);
         $query->execute();
+        // Commitando transação
+        $this->db->commit();
+        
+      } catch (Exception $e) {
+
+        $e->getCode();
+        // Em caso de erro a transação é cancelada
+        $this->db->rollBack();
+        exit();
+        
+      } finally {
+
         if ($query->rowCount() > 0) {
           $query = "UPDATE users SET pass = :pass_np WHERE login = :login_np";
           //echo $query;exit;
@@ -255,31 +373,51 @@
           echo json_encode($response);
           exit();
         }
+
+      }
+
     }
 
     public function setDelUser($id_usu){
-      if ($_SESSION['prymarya2_session_log'] === $id_usu) {
+
+      try {
+
+        // Iniciando transação
+        $this->db->beginTransaction();
         $query = "DELETE FROM users WHERE id_usu = '$id_usu'";
         //echo $query;exit;
         $query = $this->db->query($query);
-        unset($_SESSION['prymarya2_session_log']);
-        $response = array(
-          "code" => "15",
-          "message" => "Registro deletado com sucesso. Adeus!"
-        );
-        echo json_encode($response);
+        // Commitando transação
+        $this->db->commit();
+        
+      } catch (Exception $e) {
+
+        $e->getCode();
+        // Em caso de erro a transação é cancelada
+        $this->db->rollBack();
         exit();
-      } else {
-        $query = "DELETE FROM users WHERE id_usu = '$id_usu'";
-        //echo $query;exit;
-        $query = $this->db->query($query);
-        $response = array(
-          "code" => "16",
-          "message" => "Registro deletado com sucesso!"
-        );
-        echo json_encode($response);
-        exit();
+        
+      } finally {
+
+        if ($_SESSION['prymarya2_session_log'] === $id_usu) {
+          unset($_SESSION['prymarya2_session_log']);
+          $response = array(
+            "code" => "15",
+            "message" => "Registro deletado com sucesso!"
+          );
+          echo json_encode($response);
+          exit();
+        } else {
+          $response = array(
+            "code" => "16",
+            "message" => "Registro deletado com sucesso!"
+          );
+          echo json_encode($response);
+          exit();
+        }
+
       }
+
     }
 
   }

@@ -5,13 +5,34 @@
   class imagesDB extends model
   {
     public function getImages($id){
-      $returner = array();
-      $query = "SELECT LPAD(id_img,3,'0') AS cod_img, img.* FROM images img WHERE fid_usu = '$id' ORDER BY cod_img DESC";
-      $query = $this->db->query($query);
-      if ($query->rowCount() > 0) {
-        $returner = $query->fetchAll();
+
+      try {
+
+        // Iniciando transação
+        $this->db->beginTransaction();
+        $returner = array();
+        $query = "SELECT LPAD(id_img,3,'0') AS cod_img, img.* FROM images img WHERE fid_usu = '$id' ORDER BY cod_img DESC";
+        $query = $this->db->query($query);
+        // Commitando transação
+        $this->db->commit();
+        
+      } catch (Exception $e) {
+
+        $e->getCode();
+        // Em caso de erro a transação é cancelada
+        $this->db->rollBack();
+        exit();
+        
+      } finally {
+
+        if ($query->rowCount() > 0) {
+          $returner = $query->fetchAll();
+        }
+        return $returner;
+        exit();
+
       }
-      return $returner;
+
     }
 
     //QUERIES DE MODIFICAÇÃO
@@ -59,34 +80,85 @@
     }
 
     public function editImage($pic_id, $name, $description){
-      $query = "UPDATE images SET name = :name, description = :description WHERE id_img = :id_img";
-      $query = $this->db->prepare($query);
-      $query->bindValue(":name", $name);
-      $query->bindValue(":description", $description);
-      $query->bindValue(":id_img", $pic_id);
-      $query->execute();
-      header("Refresh:0");
+
+      try {
+
+        // Iniciando transação
+        $this->db->beginTransaction();
+        $query = "UPDATE images SET name = :name, description = :description WHERE id_img = :id_img";
+        $query = $this->db->prepare($query);
+        $query->bindValue(":name", $name);
+        $query->bindValue(":description", $description);
+        $query->bindValue(":id_img", $pic_id);
+        $query->execute();
+        // Commitando transação
+        $this->db->commit();
+        
+      } catch (Exception $e) {
+
+        $e->getCode();
+        // Em caso de erro a transação é cancelada
+        $this->db->rollBack();
+        exit();
+        
+      } finally {
+
+        header("Refresh:0");
+        exit();
+
+      }
+    
     }
 
     public function deleteImage($pic_id){
-      $query = "SELECT fid_usu, addr FROM images WHERE id_img = '$pic_id'";
-      //echo $query;exit;
-      $query = $this->db->query($query);
-      $array = $query->fetch();
-      $user_folder = 'media/images/' . $array['fid_usu'];
-      chmod($user_folder, 0777);
-      $pic = $array['addr'];
-      $query = "DELETE FROM images WHERE id_img = '$pic_id'";
-      //echo $query;exit;
-      $query = $this->db->query($query);
-      array_map("unlink", glob($user_folder . "/" . $pic));
-      $folder_check = scandir($user_folder);
-      if (count($folder_check) > 2) {
-        header("Refresh:0");
-      } else {
-        rmdir($user_folder);
-        header("Refresh:0");
+
+      try {
+
+        // Iniciando transação
+        $this->db->beginTransaction();
+        $query = "SELECT fid_usu, addr FROM images WHERE id_img = '$pic_id'";
+        //echo $query;exit;
+        $query = $this->db->query($query);
+        // Commitando transação
+        $this->db->commit();
+        
+      } catch (Exception $e) {
+
+        $e->getCode();
+        // Em caso de erro a transação é cancelada
+        $this->db->rollBack();
+        exit();
+        
+      } finally {
+
+        $array = $query->fetch();
+        $user_folder = 'media/images/' . $array['fid_usu'];
+        chmod($user_folder, 0777);
+        $pic = $array['addr'];
+        $query = "DELETE FROM images WHERE id_img = '$pic_id'";
+        //echo $query;exit;
+        $query = $this->db->query($query);
+        array_map("unlink", glob($user_folder . "/" . $pic));
+        $folder_check = scandir($user_folder);
+        if (count($folder_check) > 2) {
+          $response = array(
+            "code" => "18",
+            "message" => "Imagem deletada com sucesso!"
+          );
+          echo json_encode($response);
+          exit();
+        } else {
+          rmdir($user_folder);
+          $response = array(
+            "code" => "18",
+            "message" => "Imagem deletada com sucesso!"
+          );
+          echo json_encode($response);
+          exit();
+        }
+
       }
+
     }
 
   }

@@ -35,13 +35,13 @@
         $data_set['return'] = $img->editImage($pic_id, $name, $description);
       }
 
-      if (isset($_POST['deleteImageDone'])) {
-        $pic_id = $_POST['id_img'];
-        $img = new imagesDB();
-        $data_set['return'] = $img->deleteImage($pic_id);
-   }
-
       $this->loadTemplate('images', $data_set);
+    }
+
+    public function setDelImg(){
+      $pic_id = $_POST['id_img'];
+      $img = new imagesDB();
+      $img->deleteImage($pic_id);
     }
 
   }
