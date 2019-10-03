@@ -9,7 +9,7 @@
         <title>Prymarya 2 framework | Welcome</title>
         <meta name="author" content="Daniel Araujo" />
         <meta name="description" content="Prymarya 2 framework.">
-        <meta name="keywords" content="Gestão, escolar, web, HTML, CSS, Javascript" />
+        <meta name="keywords" content="Framework em PHP e Javascript" />
         <meta name="revised" content="Dancode, 19/09/2019" />
         <link rel="shortcut icon" type="image/x-icon" href="<?php echo BASEURL; ?>assets/img/icon.png">
         <link href="<?php echo BASEURL; ?>assets/lib/bootstrap-4.3.1/css/bootstrap.min.css" rel="stylesheet" />
