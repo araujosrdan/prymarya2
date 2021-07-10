@@ -6,13 +6,13 @@ Versão para servidores de hospedagem compartilhada!
 # Direitos autorais:
 -Criador: Daniel Araujo  
 
--E-mail: danershome@gmail.com  
+-E-mail: danerscode@hotmail.com  
 
 -Data da criação: 29/08/2019  
 
 # Versão:  
 
--Versão 1.0.35
+-Versão 1.0.36
 
 # Frameworks usados:
 -Para o visual foi usado o "Bootstrap 4": https://getbootstrap.com/  
@@ -28,10 +28,10 @@ Versão para servidores de hospedagem compartilhada!
 -Para manipulação de dados frontend / backend foi usado o "Axios": https://github.com/axios/axios 
 
 # Configuração:
--Para acesso a URLs modificar os arquivos .htaccess e config.php.  
+- Criar cópia de example.config.php nomeando-a local.config.php
 
--Informações do banco de dados em config.php.  
+- Inserir URL de acesso local em .htaccess e local.config.php.  
 
--Alterar ambiente de desenvolvimento para produção em enviroment.php.  
+- Inserir informações do banco de dados em local.config.php.  
 
--Montada estrutura CSS para telas de tamanhos diferentes (mobile first).
+- Criar banco de dados a partir do dbinit.sql deste projeto.

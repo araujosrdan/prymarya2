@@ -3,3 +3,4 @@ vendor/*
 assets/node_modules/*
 .vscode/*
 assets/package-lock.json
+/local.config.php
